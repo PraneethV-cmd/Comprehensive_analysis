@@ -1,7 +1,6 @@
 // NOTE: This following algorithm is for in-place quick sort.
 // TODO: to add better comments
 // TODO: to add in no of comparision operator
-// TODO: to add in the leetcode time complexity calculator
 // TODO: to add in the leetcode space completixity calculator
 // TODO: no of swaps calculator
 // TODO: no of basic operations calculator
