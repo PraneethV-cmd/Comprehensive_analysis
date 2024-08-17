@@ -5,6 +5,7 @@
 // TODO: to add in the leetcode space completixity calculator
 // TODO: no of swaps calculator
 // TODO: no of basic operations calculator
+// TODO: For the size 100 or 200 or 400, create 5 testcases from 100, 200, 400, 600, 800, 1000, and then add in the values using the random generating function in the java's inbuilt library for tis.
 
 import java.time.Instant;
 import java.time.Duration;
