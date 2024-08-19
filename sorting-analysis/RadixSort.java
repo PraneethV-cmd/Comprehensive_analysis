@@ -1,6 +1,8 @@
 import java.time.Instant;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
 
 public class RadixSort {
 
@@ -8,6 +10,7 @@ public class RadixSort {
   static int swaps = 0;
   static int basicOperations = 0;
 
+  // Function to get the maximum value in the array
   static int getMax(int[] A, int n) {
     int max = A[0];
     for (int i = 1; i < n; i++) {
@@ -20,21 +23,25 @@ public class RadixSort {
     return max;
   }
 
+  // Function to do counting sort of the array according to the digit represented by exp
   static void countSort(int[] A, int n, int exp) {
-    int output[] = new int[n]; 
-    int count[] = new int[10];
+    int[] output = new int[n];
+    int[] count = new int[10];
     Arrays.fill(count, 0);
 
+    // Store count of occurrences in count[]
     for (int i = 0; i < n; i++) {
       count[(A[i] / exp) % 10]++;
       basicOperations++;
     }
 
+    // Change count[i] so that it contains actual position of this digit in output[]
     for (int i = 1; i < 10; i++) {
       count[i] += count[i - 1];
       basicOperations++;
     }
 
+    // Build the output array
     for (int i = n - 1; i >= 0; i--) {
       output[count[(A[i] / exp) % 10] - 1] = A[i];
       count[(A[i] / exp) % 10]--;
@@ -42,39 +49,63 @@ public class RadixSort {
       basicOperations++;
     }
 
+    // Copy the output array to A[], so that A[] now contains sorted numbers according to the current digit
     for (int i = 0; i < n; i++) {
       A[i] = output[i];
       basicOperations++;
     }
   }
 
+  // Main function to sort an array using Radix Sort
   static void radixSort(int[] A, int n) {
     int max = getMax(A, n);
 
+    // Do counting sort for every digit. Note that exp is 10^i where i is the current digit number
     for (int exp = 1; max / exp > 0; exp *= 10) {
       countSort(A, n, exp);
     }
   }
 
   public static void main(String args[]) {
-    int[] A = {170, 45, 75, 90, 802, 24, 2, 66};
-    int n = A.length;
-    Instant start = Instant.now();
+    Scanner scanIn = new Scanner(System.in);
+
     Runtime runtime = Runtime.getRuntime();
-    long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
-    radixSort(A, n);
+    runtime.gc();
+    long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+    System.out.print("Enter the size of the array: ");
+    int sizeOfArr = scanIn.nextInt();
+
+    int[] A = new int[sizeOfArr];
+    Random rand = new Random();
+
+    // Generating random elements in the array
+    for (int i = 0; i < sizeOfArr; i++) {
+      A[i] = rand.nextInt(sizeOfArr);
+    }
+
+    Instant start = Instant.now();
+    radixSort(A, sizeOfArr);
     Instant end = Instant.now();
-    long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
-    long userMemoryByFunction = usedMemoryAfter - usedMemoryBefore;
+
     Duration duration = Duration.between(start, end);
-    long mils = duration.toMillis();
-    System.out.println(mils + " ms is the time complexity of this code.");
-    System.out.println(userMemoryByFunction + " bytes is the memory used.");
-    System.out.println(comparisons + " comparisons were made.");
-    System.out.println(swaps + " swaps were performed.");
-    System.out.println(basicOperations + " basic operations were executed.");
+    long timeTaken = duration.toMillis();
+
+    long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+    long memoryUsed = memoryAfter - memoryBefore;
+
+    System.out.println("Time complexity: " + timeTaken + " ms");
+    System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
+    System.out.println("Number of comparisons: " + comparisons);
+    System.out.println("Number of swaps: " + swaps);
+    System.out.println("Number of basic operations: " + basicOperations);
+
+    // Printing sorted array
+    System.out.println("Sorted array:");
     for (int i = 0; i < A.length; i++) {
       System.out.print(A[i] + " ");
     }
+
+    scanIn.close();
   }
 }
