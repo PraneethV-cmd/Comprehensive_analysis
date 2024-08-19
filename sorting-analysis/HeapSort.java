@@ -1,5 +1,5 @@
-import java.time.Instant;
-import java.time.Duration;
+import java.util.Random;
+import java.util.Scanner;
 
 public class HeapSort {
 
@@ -51,22 +51,36 @@ public class HeapSort {
   }
 
   public static void main(String args[]) {
-    int[] A = {7, 5, 4, 4, 7, 8, 8, 8, 1, 11, 3};
-
-    Instant start = Instant.now();
+    Scanner scanIn = new Scanner(System.in);
+ 
     Runtime runtime = Runtime.getRuntime();
-    long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+    runtime.gc();
+    long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
 
-    heapSort(A);
 
-    Instant end = Instant.now();
-    long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
-    long userMemoryByFunction = usedMemoryAfter - usedMemoryBefore;
 
-    Duration duration = Duration.between(start, end);
-    long mils = duration.toMillis();
-    System.out.println(mils + " ms is the time complexity of this code.");
-    System.out.println(userMemoryByFunction + " bytes is the memory used.");
+    int sizeOfArr = scanIn.nextInt();
+
+    int[] A = new int[sizeOfArr];
+    Random rand  = new Random();
+
+    for(int i = 0 ; i < sizeOfArr ; i++){
+      A[i] = rand.nextInt(sizeOfArr);
+    }
+    long startTime = System.nanoTime();
+
+       heapSort(A);
+
+    long endTime = System.nanoTime();
+
+    long duration = endTime - startTime;
+
+    long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+    long memoryUsed = memoryAfter - memoryBefore;
+
+
+    System.out.println(duration/1_000_000.0 + " ms is the time complexity of this code.");
+    System.out.println(memoryUsed/1024 + " bytes is the memory used.");
     System.out.println(comparisons + " comparisons were made.");
     System.out.println(swaps + " swaps were performed.");
     System.out.println(basicOperations + " basic operations were executed.");
@@ -74,5 +88,7 @@ public class HeapSort {
     for (int i = 0; i < A.length; i++) {
       System.out.print(A[i] + " ");
     }
+
+    scanIn.close();
   }
 }
