@@ -1,4 +1,13 @@
+import java.time.Instant;
+import java.time.Duration;
+import java.util.Random;
+import java.util.Scanner;
+
 public class ThreeWayMergeSort {
+
+    static int comparisons = 0;
+    static int swaps = 0;
+    static int basicOperations = 0;
 
     // Main function to start the three-way merge sort process
     static void threeWayMergeSort(int[] array, int low, int high) {
@@ -27,12 +36,13 @@ public class ThreeWayMergeSort {
         int k = secondMid + 1;
 
         while (i <= firstMid && j <= secondMid && k <= high) {
+            comparisons += 2;
             if (array[i] <= array[j]) {
                 if (array[i] <= array[k]) {
                     i++; // `array[i]` is in the correct place
                 } else {
-                    // `array[k]` is smaller, needs to be placed before `array[i]`
                     rotateRight(array, i, k);
+                    swaps++;
                     i++;
                     firstMid++;
                     j++;
@@ -40,54 +50,64 @@ public class ThreeWayMergeSort {
                 }
             } else {
                 if (array[j] <= array[k]) {
-                    // `array[j]` is smaller, needs to be placed before `array[i]`
                     rotateRight(array, i, j);
+                    swaps++;
                     i++;
                     firstMid++;
                     j++;
                 } else {
-                    // `array[k]` is smaller, needs to be placed before `array[i]`
                     rotateRight(array, i, k);
+                    swaps++;
                     i++;
                     firstMid++;
                     j++;
                     k++;
                 }
             }
+            basicOperations++;
         }
 
         // Merge any remaining elements between `i` and `firstMid`, `j` and `secondMid`, and `k` and `high`
         while (i <= firstMid && j <= secondMid) {
+            comparisons++;
             if (array[i] <= array[j]) {
                 i++;
             } else {
                 rotateRight(array, i, j);
+                swaps++;
                 i++;
                 firstMid++;
                 j++;
             }
+            basicOperations++;
         }
 
         while (j <= secondMid && k <= high) {
+            comparisons++;
             if (array[j] <= array[k]) {
                 j++;
             } else {
                 rotateRight(array, j, k);
+                swaps++;
                 j++;
                 secondMid++;
                 k++;
             }
+            basicOperations++;
         }
 
         while (i <= firstMid && k <= high) {
+            comparisons++;
             if (array[i] <= array[k]) {
                 i++;
             } else {
                 rotateRight(array, i, k);
+                swaps++;
                 i++;
                 firstMid++;
                 k++;
             }
+            basicOperations++;
         }
     }
 
@@ -98,16 +118,50 @@ public class ThreeWayMergeSort {
             array[i] = array[i - 1];
         }
         array[start] = temp;
+        swaps++;
+        basicOperations++;
     }
 
     public static void main(String[] args) {
-        int[] array = {12, 4, 78, 90, 45, 23, 56, 89, 15, 67};
-        threeWayMergeSort(array, 0, array.length - 1);
+        Scanner scanIn = new Scanner(System.in);
 
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+        System.out.print("Enter the size of the array: ");
+        int sizeOfArr = scanIn.nextInt();
+
+        int[] array = new int[sizeOfArr];
+        Random rand = new Random();
+
+        // Generating random elements in the array
+        for (int i = 0; i < sizeOfArr; i++) {
+            array[i] = rand.nextInt(sizeOfArr);
+        }
+
+        Instant start = Instant.now();
+        threeWayMergeSort(array, 0, array.length - 1);
+        Instant end = Instant.now();
+
+        Duration duration = Duration.between(start, end);
+        long timeTaken = duration.toMillis();
+
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        long memoryUsed = memoryAfter - memoryBefore;
+
+        System.out.println("Time complexity: " + timeTaken + " ms");
+        System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
+        System.out.println("Number of comparisons: " + comparisons);
+        System.out.println("Number of swaps: " + swaps);
+        System.out.println("Number of basic operations: " + basicOperations);
+
+        // Printing sorted array
         System.out.println("Sorted array:");
         for (int num : array) {
             System.out.print(num + " ");
         }
+
+        scanIn.close();
     }
 }
-
