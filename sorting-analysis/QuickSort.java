@@ -1,73 +1,93 @@
-// NOTE: This following algorithm is for in-place quick sort.
-// TODO: to add better comments
-// TODO: to add in no of comparision operator
-// TODO: to add in the leetcode space completixity calculator
-// TODO: no of swaps calculator
-// TODO: no of basic operations calculator
-// TODO: For the size 100 or 200 or 400, create 5 testcases from 100, 200, 400, 600, 800, 1000, and then add in the values using the random generating function in the java's inbuilt library for tis.
-
+import java.util.Random;
+import java.util.Scanner;
 import java.time.Instant;
 import java.time.Duration;
 
 public class QuickSort {
 
-  static int partition(int[] A, int l, int h){
+  static int comparisons = 0;
+  static int swaps = 0;
+  static int basicOperations = 0;
+
+  // Partition function that returns the index of the pivot
+  static int partition(int[] A, int l, int h) {
     int pivot = A[h];
-    int i = l ; 
-    int j= h ; 
-    while(i <= j) {
+    int i = l - 1; // Index of the smaller element
 
-      while(A[i] <= pivot){
-        i += 1;
-      }
-
-      while(A[j] > pivot){
-        j -= 1;
-      }
-
-      if(i < j){
+    for (int j = l; j < h; j++) {
+      comparisons++;
+      if (A[j] <= pivot) {
+        i++;
         int temp = A[i];
         A[i] = A[j];
-        A[j] = temp ;
+        A[j] = temp;
+        swaps++;
       }
-
+      basicOperations++;
     }
 
-    int temp = A[j];
-    A[j] = pivot;
-    pivot = temp;
-    return j;
+    int temp = A[i + 1];
+    A[i + 1] = A[h];
+    A[h] = temp;
+    swaps++;
+
+    basicOperations++;
+    return i + 1;
   }
 
-  static void quicksort(int[] A, int l , int h){
-    if(l < h){
-      int j = partition(A, l, h);
-      quicksort(A, l, j-1);
-      quicksort(A, j+1, h);
-      int b[] = {1,2,3,4,5,5,6,6,7,7,8};
+  // Quick Sort function
+  static void quicksort(int[] A, int l, int h) {
+    if (l < h) {
+      int pi = partition(A, l, h);
+      quicksort(A, l, pi - 1);
+      quicksort(A, pi + 1, h);
+      basicOperations++;
     }
   }
 
-  public static void main(String args[]){
-    int[] A = {7,5,4,4,7,8,8,8,1,11,3};
-    int l = 0 ;
+  public static void main(String args[]) {
+    Scanner scanIn = new Scanner(System.in);
+
+    Runtime runtime = Runtime.getRuntime();
+    runtime.gc();
+    long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+    System.out.print("Enter the size of the array: ");
+    int sizeOfArr = scanIn.nextInt();
+
+    int[] A = new int[sizeOfArr];
+    Random rand = new Random();
+
+    // Generating random elements in the array
+    for (int i = 0; i < sizeOfArr; i++) {
+      A[i] = rand.nextInt(sizeOfArr);
+    }
+
+    int l = 0;
     int h = A.length - 1;
 
     Instant start = Instant.now();
-    Runtime runtime = Runtime.getRuntime();
-    long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
     quicksort(A, l, h);
     Instant end = Instant.now();
-    long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
-    long userMemoryByFunction = usedMemoryAfter - usedMemoryBefore;
-
 
     Duration duration = Duration.between(start, end);
-    long mils = duration.toMillis();
-    System.out.println(mils + " is the time complexity of this code ");
-    System.out.println(userMemoryByFunction + " is the memory used...");
-    for(int i = 0 ; i < A.length-1 ; i++){
-      System.out.println(A[i] + " ");
+    long timeTaken = duration.toMillis();
+
+    long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+    long memoryUsed = memoryAfter - memoryBefore;
+
+    System.out.println("Time complexity: " + timeTaken + " ms");
+    System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
+    System.out.println("Number of comparisons: " + comparisons);
+    System.out.println("Number of swaps: " + swaps);
+    System.out.println("Number of basic operations: " + basicOperations);
+
+    // Printing sorted array
+    System.out.println("Sorted array:");
+    for (int i = 0; i < A.length; i++) {
+      System.out.print(A[i] + " ");
     }
+
+    scanIn.close();
   }
 }
