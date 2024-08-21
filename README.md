@@ -1,1 +1,1 @@
-# Compartive Analysis of Algorithms
+# Comprehensive Analysis of Algorithms
