@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class ThreeWayMergeSort {
 
+    // Counters for tracking the operations of the algorithm 
     static int comparisons = 0;
     static int swaps = 0;
     static int basicOperations = 0;
@@ -129,6 +130,7 @@ public class ThreeWayMergeSort {
         runtime.gc();
         long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
 
+        //Takes size of the array as an input from the user
         System.out.print("Enter the size of the array: ");
         int sizeOfArr = scanIn.nextInt();
 
@@ -140,13 +142,16 @@ public class ThreeWayMergeSort {
             array[i] = rand.nextInt(sizeOfArr);
         }
 
+        //Record the start time
         Instant start = Instant.now();
+        //Performs threeWayMergeSort
         threeWayMergeSort(array, 0, array.length - 1);
         Instant end = Instant.now();
 
         Duration duration = Duration.between(start, end);
         long timeTaken = duration.toMillis();
 
+        //Calculate the total memory used during the sort
         long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
         long memoryUsed = memoryAfter - memoryBefore;
 

@@ -5,6 +5,7 @@ import java.time.Duration;
 
 public class QuickSort {
 
+  // Counters for tracking the operations of the algorithm 
   static int comparisons = 0;
   static int swaps = 0;
   static int basicOperations = 0;
@@ -52,6 +53,7 @@ public class QuickSort {
     runtime.gc();
     long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
 
+    //Takes size of the array as an input from the user
     System.out.print("Enter the size of the array: ");
     int sizeOfArr = scanIn.nextInt();
 
@@ -66,13 +68,17 @@ public class QuickSort {
     int l = 0;
     int h = A.length - 1;
 
+    //Record the start time
     Instant start = Instant.now();
+    //Performs quick sort
     quicksort(A, l, h);
+    //Record the end time
     Instant end = Instant.now();
 
     Duration duration = Duration.between(start, end);
     long timeTaken = duration.toMillis();
 
+    //Calculate the total memory used during the sort
     long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
     long memoryUsed = memoryAfter - memoryBefore;
 

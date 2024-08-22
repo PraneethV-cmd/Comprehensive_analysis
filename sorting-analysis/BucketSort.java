@@ -3,20 +3,25 @@ import java.time.Instant;
 import java.time.Duration;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class BucketSort {
 
+    // Counters for tracking the operations of the algorithm 
     static int comparisons = 0;
     static int swaps = 0;
     static int basicOperations = 0;
 
+    //Function that performs sort
     static void insertion_sort(LinkedList<Integer> buckets) {
         int n = buckets.size();
-
+        
+        
         for (int i = 1; i < n; i++) {
             int key = buckets.get(i);
             int j = i - 1;
-
+            
+            
             while (j >= 0 && buckets.get(j) > key) {
                 comparisons++;
                 buckets.set(j + 1, buckets.get(j));
@@ -29,6 +34,7 @@ public class BucketSort {
         }
     }
 
+    //Function to perform bucket sort on an array
     static void bucket_sort(int[] arr) {
         int arrLen = arr.length;
 
@@ -38,7 +44,6 @@ public class BucketSort {
         LinkedList<Integer>[] buckets = new LinkedList[arrLen];
 
         int maxVal = arr[0];
-
         for (int i = 1; i < arrLen; i++) {
             comparisons++;
             if (arr[i] > maxVal) {
@@ -46,21 +51,24 @@ public class BucketSort {
             }
             basicOperations++;
         }
-
+        
         for (int i = 0; i < arrLen; i++) {
             buckets[i] = new LinkedList<>();
         }
 
+        
         for (int i = 0; i < arrLen; i++) {
             int bucketIdx = (arrLen * arr[i]) / (maxVal + 1);
             buckets[bucketIdx].add(arr[i]);
             basicOperations++;
         }
 
+        
         for (int i = 0; i < arrLen; i++) {
             insertion_sort(buckets[i]);
         }
 
+        
         int index = 0;
         for (int i = 0; i < arrLen; i++) {
             for (int value : buckets[i]) {
@@ -77,6 +85,7 @@ public class BucketSort {
         runtime.gc();
         long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
 
+        //Takes size of the array as an input from the user
         System.out.print("Enter the size of the array: ");
         int sizeOfArr = scanIn.nextInt();
 
@@ -88,19 +97,25 @@ public class BucketSort {
             arr[i] = rand.nextInt(sizeOfArr);
         }
 
+        //Print the original array
         System.out.println("Original array:");
         for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i] + " ");
         }
         System.out.println();
 
+        //Record the start time
         Instant start = Instant.now();
+        //Perform bucket sort
         bucket_sort(arr);
+        //Record the end time
         Instant end = Instant.now();
 
+        //Calculate the duration of the sort
         Duration duration = Duration.between(start, end);
         long timeTaken = duration.toMillis();
 
+        //Calculate the total memory used 
         long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
         long memoryUsed = memoryAfter - memoryBefore;
 
@@ -110,6 +125,7 @@ public class BucketSort {
         System.out.println("Number of swaps: " + swaps);
         System.out.println("Number of basic operations: " + basicOperations);
 
+        //Display the sorted array
         System.out.println("Sorted array:");
         for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i] + " ");

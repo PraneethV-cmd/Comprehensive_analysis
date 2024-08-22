@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class RadixSort {
 
+  // Counters for tracking the operations of the algorithm 
   static int comparisons = 0;
   static int swaps = 0;
   static int basicOperations = 0;
@@ -23,25 +24,22 @@ public class RadixSort {
     return max;
   }
 
-  // Function to do counting sort of the array according to the digit represented by exp
+  // Performs count sort
   static void countSort(int[] A, int n, int exp) {
     int[] output = new int[n];
     int[] count = new int[10];
     Arrays.fill(count, 0);
 
-    // Store count of occurrences in count[]
     for (int i = 0; i < n; i++) {
       count[(A[i] / exp) % 10]++;
       basicOperations++;
     }
 
-    // Change count[i] so that it contains actual position of this digit in output[]
     for (int i = 1; i < 10; i++) {
       count[i] += count[i - 1];
       basicOperations++;
     }
 
-    // Build the output array
     for (int i = n - 1; i >= 0; i--) {
       output[count[(A[i] / exp) % 10] - 1] = A[i];
       count[(A[i] / exp) % 10]--;
@@ -49,18 +47,15 @@ public class RadixSort {
       basicOperations++;
     }
 
-    // Copy the output array to A[], so that A[] now contains sorted numbers according to the current digit
     for (int i = 0; i < n; i++) {
       A[i] = output[i];
       basicOperations++;
     }
   }
 
-  // Main function to sort an array using Radix Sort
   static void radixSort(int[] A, int n) {
     int max = getMax(A, n);
 
-    // Do counting sort for every digit. Note that exp is 10^i where i is the current digit number
     for (int exp = 1; max / exp > 0; exp *= 10) {
       countSort(A, n, exp);
     }
@@ -72,7 +67,7 @@ public class RadixSort {
     Runtime runtime = Runtime.getRuntime();
     runtime.gc();
     long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
-
+    //Takes size of the array as an input from the user
     System.out.print("Enter the size of the array: ");
     int sizeOfArr = scanIn.nextInt();
 
@@ -83,14 +78,18 @@ public class RadixSort {
     for (int i = 0; i < sizeOfArr; i++) {
       A[i] = rand.nextInt(sizeOfArr);
     }
-
+    
+    //Record the start time
     Instant start = Instant.now();
+    //Performs the radix sort
     radixSort(A, sizeOfArr);
+    //Record the end time
     Instant end = Instant.now();
 
     Duration duration = Duration.between(start, end);
     long timeTaken = duration.toMillis();
 
+    //Calculate the memory used during the sort
     long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
     long memoryUsed = memoryAfter - memoryBefore;
 
