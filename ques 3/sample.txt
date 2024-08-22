@@ -1,0 +1,443 @@
+7 6
+0 4
+0 5
+2 3
+2 5
+6 2
+6 4
+Graph structure:
+0 -> vertex: 4 vertex: 5 
+2 -> vertex: 3 vertex: 5 vertex: 6 
+3 -> vertex: 2 
+4 -> vertex: 0 vertex: 6 
+5 -> vertex: 0 vertex: 2 
+6 -> vertex: 2 vertex: 4 
+Articulation Points:
+Articulation points in the graph: 2 
+
+4 1
+3 2
+Graph structure:
+2 -> vertex: 3 
+3 -> vertex: 2 
+Articulation Points:
+Articulation points in the graph: 
+
+5 5
+1 3
+2 1
+2 4
+3 2
+4 1
+Graph structure:
+1 -> vertex: 3 vertex: 2 vertex: 4 
+2 -> vertex: 1 vertex: 4 vertex: 3 
+3 -> vertex: 1 vertex: 2 
+4 -> vertex: 2 vertex: 1 
+Articulation Points:
+Articulation points in the graph: 1 
+
+8 18
+0 2
+0 4
+1 0
+1 2
+2 4
+3 0
+3 4
+3 7
+5 0
+5 1
+5 2
+5 3
+5 4
+6 0
+6 3
+7 2
+7 4
+7 6
+Graph structure:
+0 -> vertex: 2 vertex: 4 vertex: 1 vertex: 3 vertex: 5 vertex: 6 
+1 -> vertex: 0 vertex: 2 vertex: 5 
+2 -> vertex: 0 vertex: 1 vertex: 4 vertex: 5 vertex: 7 
+3 -> vertex: 0 vertex: 4 vertex: 7 vertex: 5 vertex: 6 
+4 -> vertex: 0 vertex: 2 vertex: 3 vertex: 5 vertex: 7 
+5 -> vertex: 0 vertex: 1 vertex: 2 vertex: 3 vertex: 4 
+6 -> vertex: 0 vertex: 3 vertex: 7 
+7 -> vertex: 3 vertex: 2 vertex: 4 vertex: 6 
+Articulation Points:
+Articulation points in the graph: 
+
+19 166
+0 1
+0 3
+0 5
+0 7
+0 8
+0 11
+0 12
+0 13
+0 16
+0 18
+1 2
+1 3
+1 7
+1 10
+1 15
+1 16
+1 18
+2 0
+2 3
+2 5
+2 6
+2 7
+2 9
+2 11
+2 13
+2 14
+2 15
+3 4
+3 7
+3 8
+3 9
+3 11
+3 12
+3 14
+3 17
+3 18
+4 0
+4 1
+4 2
+4 9
+4 11
+4 12
+4 13
+4 15
+5 3
+5 4
+5 6
+5 10
+5 11
+5 12
+5 16
+5 17
+5 18
+6 0
+6 1
+6 3
+6 4
+6 7
+6 10
+6 16
+7 5
+7 12
+7 13
+7 14
+7 16
+7 17
+8 1
+8 2
+8 4
+8 5
+8 6
+8 7
+8 9
+8 12
+8 13
+8 15
+8 16
+9 0
+9 1
+9 5
+9 6
+9 10
+9 14
+9 15
+9 17
+10 0
+10 2
+10 3
+10 4
+10 7
+10 8
+10 12
+10 15
+10 16
+11 1
+11 6
+11 7
+11 8
+11 9
+11 12
+11 13
+11 17
+11 18
+12 2
+12 6
+12 9
+12 15
+12 17
+12 18
+13 1
+13 3
+13 5
+13 6
+13 9
+13 10
+13 12
+13 14
+13 17
+14 0
+14 1
+14 4
+14 5
+14 6
+14 8
+14 10
+14 11
+14 12
+14 15
+14 17
+14 18
+15 0
+15 3
+15 5
+15 6
+15 7
+15 11
+15 13
+15 16
+15 18
+16 2
+16 3
+16 4
+16 9
+16 11
+16 12
+16 13
+16 14
+16 18
+17 0
+17 1
+17 2
+17 4
+17 6
+17 8
+17 10
+17 15
+17 16
+17 18
+18 2
+18 4
+18 6
+18 7
+18 8
+18 9
+18 10
+18 13
+Graph structure:
+0 -> vertex: 1 vertex: 3 vertex: 5 vertex: 7 vertex: 8 vertex: 11 vertex: 12 vertex: 13 vertex: 16 vertex: 18 vertex: 2 vertex: 4 vertex: 6 vertex: 9 vertex: 10 vertex: 14 vertex: 15 vertex: 17 
+1 -> vertex: 0 vertex: 2 vertex: 3 vertex: 7 vertex: 10 vertex: 15 vertex: 16 vertex: 18 vertex: 4 vertex: 6 vertex: 8 vertex: 9 vertex: 11 vertex: 13 vertex: 14 vertex: 17 
+2 -> vertex: 1 vertex: 0 vertex: 3 vertex: 5 vertex: 6 vertex: 7 vertex: 9 vertex: 11 vertex: 13 vertex: 14 vertex: 15 vertex: 4 vertex: 8 vertex: 10 vertex: 12 vertex: 16 vertex: 17 vertex: 18 
+3 -> vertex: 0 vertex: 1 vertex: 2 vertex: 4 vertex: 7 vertex: 8 vertex: 9 vertex: 11 vertex: 12 vertex: 14 vertex: 17 vertex: 18 vertex: 5 vertex: 6 vertex: 10 vertex: 13 vertex: 15 vertex: 16 
+4 -> vertex: 3 vertex: 0 vertex: 1 vertex: 2 vertex: 9 vertex: 11 vertex: 12 vertex: 13 vertex: 15 vertex: 5 vertex: 6 vertex: 8 vertex: 10 vertex: 14 vertex: 16 vertex: 17 vertex: 18 
+5 -> vertex: 0 vertex: 2 vertex: 3 vertex: 4 vertex: 6 vertex: 10 vertex: 11 vertex: 12 vertex: 16 vertex: 17 vertex: 18 vertex: 7 vertex: 8 vertex: 9 vertex: 13 vertex: 14 vertex: 15 
+6 -> vertex: 2 vertex: 5 vertex: 0 vertex: 1 vertex: 3 vertex: 4 vertex: 7 vertex: 10 vertex: 16 vertex: 8 vertex: 9 vertex: 11 vertex: 12 vertex: 13 vertex: 14 vertex: 15 vertex: 17 vertex: 18 
+7 -> vertex: 0 vertex: 1 vertex: 2 vertex: 3 vertex: 6 vertex: 5 vertex: 12 vertex: 13 vertex: 14 vertex: 16 vertex: 17 vertex: 8 vertex: 10 vertex: 11 vertex: 15 vertex: 18 
+8 -> vertex: 0 vertex: 3 vertex: 1 vertex: 2 vertex: 4 vertex: 5 vertex: 6 vertex: 7 vertex: 9 vertex: 12 vertex: 13 vertex: 15 vertex: 16 vertex: 10 vertex: 11 vertex: 14 vertex: 17 vertex: 18 
+9 -> vertex: 2 vertex: 3 vertex: 4 vertex: 8 vertex: 0 vertex: 1 vertex: 5 vertex: 6 vertex: 10 vertex: 14 vertex: 15 vertex: 17 vertex: 11 vertex: 12 vertex: 13 vertex: 16 vertex: 18 
+10 -> vertex: 1 vertex: 5 vertex: 6 vertex: 9 vertex: 0 vertex: 2 vertex: 3 vertex: 4 vertex: 7 vertex: 8 vertex: 12 vertex: 15 vertex: 16 vertex: 13 vertex: 14 vertex: 17 vertex: 18 
+11 -> vertex: 0 vertex: 2 vertex: 3 vertex: 4 vertex: 5 vertex: 1 vertex: 6 vertex: 7 vertex: 8 vertex: 9 vertex: 12 vertex: 13 vertex: 17 vertex: 18 vertex: 14 vertex: 15 vertex: 16 
+12 -> vertex: 0 vertex: 3 vertex: 4 vertex: 5 vertex: 7 vertex: 8 vertex: 10 vertex: 11 vertex: 2 vertex: 6 vertex: 9 vertex: 15 vertex: 17 vertex: 18 vertex: 13 vertex: 14 vertex: 16 
+13 -> vertex: 0 vertex: 2 vertex: 4 vertex: 7 vertex: 8 vertex: 11 vertex: 1 vertex: 3 vertex: 5 vertex: 6 vertex: 9 vertex: 10 vertex: 12 vertex: 14 vertex: 17 vertex: 15 vertex: 16 vertex: 18 
+14 -> vertex: 2 vertex: 3 vertex: 7 vertex: 9 vertex: 13 vertex: 0 vertex: 1 vertex: 4 vertex: 5 vertex: 6 vertex: 8 vertex: 10 vertex: 11 vertex: 12 vertex: 15 vertex: 17 vertex: 18 vertex: 16 
+15 -> vertex: 1 vertex: 2 vertex: 4 vertex: 8 vertex: 9 vertex: 10 vertex: 12 vertex: 14 vertex: 0 vertex: 3 vertex: 5 vertex: 6 vertex: 7 vertex: 11 vertex: 13 vertex: 16 vertex: 18 vertex: 17 
+16 -> vertex: 0 vertex: 1 vertex: 5 vertex: 6 vertex: 7 vertex: 8 vertex: 10 vertex: 15 vertex: 2 vertex: 3 vertex: 4 vertex: 9 vertex: 11 vertex: 12 vertex: 13 vertex: 14 vertex: 18 vertex: 17 
+17 -> vertex: 3 vertex: 5 vertex: 7 vertex: 9 vertex: 11 vertex: 12 vertex: 13 vertex: 14 vertex: 0 vertex: 1 vertex: 2 vertex: 4 vertex: 6 vertex: 8 vertex: 10 vertex: 15 vertex: 16 vertex: 18 
+18 -> vertex: 0 vertex: 1 vertex: 3 vertex: 5 vertex: 11 vertex: 12 vertex: 14 vertex: 15 vertex: 16 vertex: 17 vertex: 2 vertex: 4 vertex: 6 vertex: 7 vertex: 8 vertex: 9 vertex: 10 vertex: 13 
+Articulation Points:
+Articulation points in the graph: 
+
+8 21
+0 3
+1 0
+1 5
+1 6
+2 1
+2 4
+2 6
+3 1
+3 6
+4 7
+5 0
+5 3
+5 6
+5 7
+6 0
+6 4
+6 7
+7 0
+7 1
+7 2
+7 3
+Graph structure:
+0 -> vertex: 3 vertex: 1 vertex: 5 vertex: 6 vertex: 7 
+1 -> vertex: 0 vertex: 5 vertex: 6 vertex: 2 vertex: 3 vertex: 7 
+2 -> vertex: 1 vertex: 4 vertex: 6 vertex: 7 
+3 -> vertex: 0 vertex: 1 vertex: 6 vertex: 5 vertex: 7 
+4 -> vertex: 2 vertex: 7 vertex: 6 
+5 -> vertex: 1 vertex: 0 vertex: 3 vertex: 6 vertex: 7 
+6 -> vertex: 1 vertex: 2 vertex: 3 vertex: 5 vertex: 0 vertex: 4 vertex: 7 
+7 -> vertex: 4 vertex: 5 vertex: 6 vertex: 0 vertex: 1 vertex: 2 vertex: 3 
+Articulation Points:
+Articulation points in the graph: 
+
+18 83
+0 3
+0 17
+1 3
+1 6
+1 11
+1 17
+2 5
+2 9
+2 16
+3 6
+3 7
+3 14
+3 15
+3 16
+4 0
+4 2
+4 5
+4 8
+4 10
+4 11
+4 16
+4 17
+5 0
+5 8
+5 11
+5 13
+5 14
+5 15
+6 0
+6 5
+6 9
+6 12
+6 13
+6 16
+6 17
+7 2
+7 4
+7 5
+7 9
+7 11
+7 13
+8 3
+8 6
+8 13
+8 14
+8 17
+9 0
+9 1
+9 3
+9 10
+9 12
+9 17
+10 3
+10 5
+10 6
+10 11
+10 13
+10 17
+11 3
+11 13
+11 16
+12 3
+12 5
+12 7
+12 10
+13 1
+13 2
+13 16
+13 17
+14 9
+14 10
+14 16
+15 2
+15 12
+15 16
+16 1
+16 17
+17 3
+17 5
+17 7
+17 11
+17 12
+17 14
+Graph structure:
+0 -> vertex: 3 vertex: 17 vertex: 4 vertex: 5 vertex: 6 vertex: 9 
+1 -> vertex: 3 vertex: 6 vertex: 11 vertex: 17 vertex: 9 vertex: 13 vertex: 16 
+2 -> vertex: 5 vertex: 9 vertex: 16 vertex: 4 vertex: 7 vertex: 13 vertex: 15 
+3 -> vertex: 0 vertex: 1 vertex: 6 vertex: 7 vertex: 14 vertex: 15 vertex: 16 vertex: 8 vertex: 9 vertex: 10 vertex: 11 vertex: 12 vertex: 17 
+4 -> vertex: 0 vertex: 2 vertex: 5 vertex: 8 vertex: 10 vertex: 11 vertex: 16 vertex: 17 vertex: 7 
+5 -> vertex: 2 vertex: 4 vertex: 0 vertex: 8 vertex: 11 vertex: 13 vertex: 14 vertex: 15 vertex: 6 vertex: 7 vertex: 10 vertex: 12 vertex: 17 
+6 -> vertex: 1 vertex: 3 vertex: 0 vertex: 5 vertex: 9 vertex: 12 vertex: 13 vertex: 16 vertex: 17 vertex: 8 vertex: 10 
+7 -> vertex: 3 vertex: 2 vertex: 4 vertex: 5 vertex: 9 vertex: 11 vertex: 13 vertex: 12 vertex: 17 
+8 -> vertex: 4 vertex: 5 vertex: 3 vertex: 6 vertex: 13 vertex: 14 vertex: 17 
+9 -> vertex: 2 vertex: 6 vertex: 7 vertex: 0 vertex: 1 vertex: 3 vertex: 10 vertex: 12 vertex: 17 vertex: 14 
+10 -> vertex: 4 vertex: 9 vertex: 3 vertex: 5 vertex: 6 vertex: 11 vertex: 13 vertex: 17 vertex: 12 vertex: 14 
+11 -> vertex: 1 vertex: 4 vertex: 5 vertex: 7 vertex: 10 vertex: 3 vertex: 13 vertex: 16 vertex: 17 
+12 -> vertex: 6 vertex: 9 vertex: 3 vertex: 5 vertex: 7 vertex: 10 vertex: 15 vertex: 17 
+13 -> vertex: 5 vertex: 6 vertex: 7 vertex: 8 vertex: 10 vertex: 11 vertex: 1 vertex: 2 vertex: 16 vertex: 17 
+14 -> vertex: 3 vertex: 5 vertex: 8 vertex: 9 vertex: 10 vertex: 16 vertex: 17 
+15 -> vertex: 3 vertex: 5 vertex: 2 vertex: 12 vertex: 16 
+16 -> vertex: 2 vertex: 3 vertex: 4 vertex: 6 vertex: 11 vertex: 13 vertex: 14 vertex: 15 vertex: 1 vertex: 17 
+17 -> vertex: 0 vertex: 1 vertex: 4 vertex: 6 vertex: 8 vertex: 9 vertex: 10 vertex: 13 vertex: 16 vertex: 3 vertex: 5 vertex: 7 vertex: 11 vertex: 12 vertex: 14 
+Articulation Points:
+Articulation points in the graph: 
+
+20 20
+1 10
+1 12
+3 16
+4 5
+6 7
+6 18
+7 10
+7 16
+8 4
+8 6
+9 3
+9 5
+11 8
+12 6
+13 17
+15 4
+15 16
+17 9
+19 9
+19 14
+Graph structure:
+1 -> vertex: 10 vertex: 12 
+3 -> vertex: 16 vertex: 9 
+4 -> vertex: 5 vertex: 8 vertex: 15 
+5 -> vertex: 4 vertex: 9 
+6 -> vertex: 7 vertex: 18 vertex: 8 vertex: 12 
+7 -> vertex: 6 vertex: 10 vertex: 16 
+8 -> vertex: 4 vertex: 6 vertex: 11 
+9 -> vertex: 3 vertex: 5 vertex: 17 vertex: 19 
+10 -> vertex: 1 vertex: 7 
+11 -> vertex: 8 
+12 -> vertex: 1 vertex: 6 
+13 -> vertex: 17 
+14 -> vertex: 19 
+15 -> vertex: 4 vertex: 16 
+16 -> vertex: 3 vertex: 7 vertex: 15 
+17 -> vertex: 13 vertex: 9 
+18 -> vertex: 6 
+19 -> vertex: 9 vertex: 14 
+Articulation Points:
+Articulation points in the graph: 6 8 9 17 
+
