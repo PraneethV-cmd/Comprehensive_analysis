@@ -7,12 +7,10 @@
 #include <cstdlib>
 #include <ctime>
 
-using namespace std;
-
 class Vertex {
 public:
     int id;
-    vector<pair<Vertex*, int>> adjVertices; // Pair of adjacent vertex and edge weight
+    std::vector<std::pair<Vertex*, int>> adjVertices; // Pair of adjacent vertex and edge weight
 
     Vertex(int id) : id(id) {}
 
@@ -23,7 +21,7 @@ public:
 
 class Graph {
 private:
-    unordered_map<int, Vertex*> vertices;
+    std::unordered_map<int, Vertex*> vertices;
     bool directed;
 
 public:
@@ -37,8 +35,8 @@ public:
         vertices[from]->addEdge(vertices[to], weight);
     }
 
-    vector<Vertex*> getAllVertices() {
-        vector<Vertex*> result;
+    std::vector<Vertex*> getAllVertices() {
+        std::vector<Vertex*> result;
         for (auto& pair : vertices) {
             result.push_back(pair.second);
         }
@@ -63,9 +61,9 @@ public:
 
 class StronglyConnectedComponent {
 public:
-    vector<set<Vertex*>> scc(Graph& graph) {
-        stack<Vertex*> finishStack;
-        unordered_set<Vertex*> visited;
+    std::vector<std::set<Vertex*>> scc(Graph& graph) {
+        std::stack<Vertex*> finishStack;
+        std::unordered_set<Vertex*> visited;
 
         for (Vertex* vertex : graph.getAllVertices()) {
             if (visited.find(vertex) == visited.end()) {
@@ -76,12 +74,12 @@ public:
         Graph reverseGraph = graph.reverseGraph();
 
         visited.clear();
-        vector<set<Vertex*>> result;
+        std::vector<std::set<Vertex*>> result;
         while (!finishStack.empty()) {
             Vertex* vertex = reverseGraph.getVertex(finishStack.top()->id);
             finishStack.pop();
             if (visited.find(vertex) == visited.end()) {
-                set<Vertex*> component;
+                std::set<Vertex*> component;
                 DFSUtilForReverseGraph(vertex, visited, component);
                 result.push_back(component);
             }
@@ -90,7 +88,7 @@ public:
     }
 
 private:
-    void DFSUtil(Vertex* vertex, unordered_set<Vertex*>& visited, stack<Vertex*>& finishStack) {
+    void DFSUtil(Vertex* vertex, std::unordered_set<Vertex*>& visited, std::stack<Vertex*>& finishStack) {
         visited.insert(vertex);
         for (auto& adj : vertex->adjVertices) {
             if (visited.find(adj.first) == visited.end()) {
@@ -100,7 +98,7 @@ private:
         finishStack.push(vertex);
     }
 
-    void DFSUtilForReverseGraph(Vertex* vertex, unordered_set<Vertex*>& visited, set<Vertex*>& component) {
+    void DFSUtilForReverseGraph(Vertex* vertex, std::unordered_set<Vertex*>& visited, std::set<Vertex*>& component) {
         visited.insert(vertex);
         component.insert(vertex);
         for (auto& adj : vertex->adjVertices) {
@@ -112,7 +110,7 @@ private:
 };
 
 int main() {
-    srand(time(0));
+    std::srand(std::time(0));
 
     const int RUN = 5;
     const int MAX_VERTICES = 20;
@@ -120,44 +118,44 @@ int main() {
     const int MAXWEIGHT = 200;
 
     for (int i = 1; i <= RUN; i++) {
-        int NUM = 1 + rand() % MAX_VERTICES;
-        int NUMEDGE = 1 + rand() % MAX_EDGES;
+        int NUM = 1 + std::rand() % MAX_VERTICES;
+        int NUMEDGE = 1 + std::rand() % MAX_EDGES;
 
         while (NUMEDGE > NUM * (NUM - 1) / 2)
-            NUMEDGE = 1 + rand() % MAX_EDGES;
+            NUMEDGE = 1 + std::rand() % MAX_EDGES;
 
         Graph graph(true);
 
-        set<pair<int, int>> container;
+        std::set<std::pair<int, int>> container;
 
         for (int j = 1; j <= NUMEDGE; j++) {
-            int a = 1 + rand() % NUM;
-            int b = 1 + rand() % NUM;
-            pair<int, int> p = make_pair(a, b);
+            int a = 1 + std::rand() % NUM;
+            int b = 1 + std::rand() % NUM;
+            std::pair<int, int> p = std::make_pair(a, b);
 
             while (container.find(p) != container.end() || a == b) {
-                a = 1 + rand() % NUM;
-                b = 1 + rand() % NUM;
-                p = make_pair(a, b);
+                a = 1 + std::rand() % NUM;
+                b = 1 + std::rand() % NUM;
+                p = std::make_pair(a, b);
             }
             container.insert(p);
-            int wt = 1 + rand() % MAXWEIGHT;
+            int wt = 1 + std::rand() % MAXWEIGHT;
             graph.addEdge(a, b, wt);
         }
 
         StronglyConnectedComponent scc;
-        vector<set<Vertex*>> result = scc.scc(graph);
+        std::vector<std::set<Vertex*>> result = scc.scc(graph);
 
-        cout << "Graph " << i << ": " << NUM << " vertices, " << NUMEDGE << " edges" << endl;
-        cout << "Strongly Connected Components:" << endl;
+        std::cout << "Graph " << i << ": " << NUM << " vertices, " << NUMEDGE << " edges" << std::endl;
+        std::cout << "Strongly Connected Components:" << std::endl;
 
         for (const auto& component : result) {
             for (Vertex* v : component) {
-                cout << v->id << " ";
+                std::cout << v->id << " ";
             }
-            cout << endl;
+            std::cout << std::endl;
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 
     return 0;

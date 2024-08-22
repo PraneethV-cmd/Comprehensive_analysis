@@ -1,15 +1,14 @@
-#include<iostream>
-#include<climits>
-#include<list>
-#include<vector>
-#include<algorithm>
-#include<map>
-#include<set>
-using namespace std;
+#include <iostream>
+#include <climits>
+#include <list>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
 
 class Graph {
 public:
-    map<int, list<int> > adjacencyList;
+    std::map<int, std::list<int>> adjacencyList;
 
 public:
     void add_edge(int u, int v) {
@@ -18,17 +17,18 @@ public:
     }
 
     void print() {
-        for (auto i : adjacencyList) {
-            cout << i.first << " -> ";
-            for (auto j : i.second) {
-                cout << "vertex: " << j << " ";
+        for (const auto& i : adjacencyList) {
+            std::cout << i.first << " -> ";
+            for (const auto& j : i.second) {
+                std::cout << "vertex: " << j << " ";
             }
-            cout << endl;
+            std::cout << std::endl;
         }
     }
 
-    void findArticulationPointsHelper(int u, vector<bool>& visited,
-        vector<int>& discoveryTime, vector<int>& lowTime, vector<int>& parent, vector<bool>& articulationPoints) {
+    void findArticulationPointsHelper(int u, std::vector<bool>& visited,
+                                      std::vector<int>& discoveryTime, std::vector<int>& lowTime, 
+                                      std::vector<int>& parent, std::vector<bool>& articulationPoints) {
         static int time = 0;
         visited[u] = true;
         discoveryTime[u] = lowTime[u] = ++time;
@@ -40,7 +40,7 @@ public:
                 parent[v] = u;
                 findArticulationPointsHelper(v, visited, discoveryTime, lowTime, parent, articulationPoints);
 
-                lowTime[u] = min(lowTime[u], lowTime[v]);
+                lowTime[u] = std::min(lowTime[u], lowTime[v]);
 
                 if (parent[u] == -1 && children > 1)
                     articulationPoints[u] = true;
@@ -49,32 +49,32 @@ public:
                     articulationPoints[u] = true;
 
             } else if (v != parent[u]) {
-                lowTime[u] = min(lowTime[u], discoveryTime[v]);
+                lowTime[u] = std::min(lowTime[u], discoveryTime[v]);
             }
         }
     }
 
     void findArticulationPoints() {
         int adjSize = adjacencyList.size();
-        vector<bool> visited(adjSize, false);
-        vector<int> discoveryTime(adjSize, -1);
-        vector<int> lowTime(adjSize, -1);
-        vector<int> parent(adjSize, -1);
-        vector<bool> articulationPoints(adjSize, false);
+        std::vector<bool> visited(adjSize, false);
+        std::vector<int> discoveryTime(adjSize, -1);
+        std::vector<int> lowTime(adjSize, -1);
+        std::vector<int> parent(adjSize, -1);
+        std::vector<bool> articulationPoints(adjSize, false);
 
-        for (auto i : adjacencyList) {
+        for (const auto& i : adjacencyList) {
             if (!visited[i.first]) {
                 findArticulationPointsHelper(i.first, visited, discoveryTime, lowTime, parent, articulationPoints);
             }
         }
 
-        cout << "Articulation points in the graph: ";
+        std::cout << "Articulation points in the graph: ";
         for (int i = 0; i < adjSize; i++) {
             if (articulationPoints[i]) {
-                cout << i << " ";
+                std::cout << i << " ";
             }
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 };
 
@@ -83,10 +83,9 @@ public:
 #define MAX_EDGES 200
 
 int main() {
-    set<pair<int, int> > container;
-    set<pair<int, int> >::iterator it;
+    std::set<std::pair<int, int>> container;
 
-    srand(time(NULL));
+    std::srand(std::time(NULL));
 
     int NUM; // Number of Vertices
     int NUMEDGE; // Number of Edges
@@ -94,46 +93,46 @@ int main() {
     for (int i = 1; i <= RUN; i++) {
         Graph g;
 
-        NUM = 1 + rand() % MAX_VERTICES;
+        NUM = 1 + std::rand() % MAX_VERTICES;
 
-        NUMEDGE = 1 + rand() % MAX_EDGES;
+        NUMEDGE = 1 + std::rand() % MAX_EDGES;
 
         while (NUMEDGE > NUM * (NUM - 1) / 2)
-            NUMEDGE = 1 + rand() % MAX_EDGES;
+            NUMEDGE = 1 + std::rand() % MAX_EDGES;
 
-        printf("%d %d\n", NUM, NUMEDGE);
+        std::printf("%d %d\n", NUM, NUMEDGE);
 
         for (int j = 1; j <= NUMEDGE; j++) {
-            int a = rand() % NUM;
-            int b = rand() % NUM;
-            pair<int, int> p = make_pair(a, b);
-            pair<int, int> reverse_p = make_pair(b, a);
+            int a = std::rand() % NUM;
+            int b = std::rand() % NUM;
+            std::pair<int, int> p = std::make_pair(a, b);
+            std::pair<int, int> reverse_p = std::make_pair(b, a);
 
             while (container.find(p) != container.end()
                    || container.find(reverse_p) != container.end()
                    || a == b) { // Ensuring no self-loops
-                a = rand() % NUM;
-                b = rand() % NUM;
-                p = make_pair(a, b);
-                reverse_p = make_pair(b, a);
+                a = std::rand() % NUM;
+                b = std::rand() % NUM;
+                p = std::make_pair(a, b);
+                reverse_p = std::make_pair(b, a);
             }
             container.insert(p);
         }
 
-        for (it = container.begin(); it != container.end(); ++it) {
+        for (auto it = container.begin(); it != container.end(); ++it) {
             g.add_edge(it->first, it->second);
-            printf("%d %d\n", it->first, it->second);
+            std::printf("%d %d\n", it->first, it->second);
         }
 
         container.clear();
 
         // Print the graph and find articulation points
-        cout << "Graph structure:\n";
+        std::cout << "Graph structure:\n";
         g.print();
 
-        cout << "Articulation Points:\n";
+        std::cout << "Articulation Points:\n";
         g.findArticulationPoints();
-        cout << endl;
+        std::cout << std::endl;
     }
 
     return 0;

@@ -6,12 +6,10 @@
 #include <ctime>
 #include <cstdlib>
 
-using namespace std;
-
 class Vertex {
 public:
     int id;
-    vector<Vertex*> adjacentVertices;
+    std::vector<Vertex*> adjacentVertices;
 
     Vertex(int id) : id(id) {}
 
@@ -19,7 +17,7 @@ public:
         adjacentVertices.push_back(vertex);
     }
 
-    vector<Vertex*>& getAdjacentVertices() {
+    std::vector<Vertex*>& getAdjacentVertices() {
         return adjacentVertices;
     }
 };
@@ -41,7 +39,7 @@ public:
 
 class Graph {
 public:
-    map<int, Vertex*> vertices;
+    std::map<int, Vertex*> vertices;
     bool isDirected;
 
     Graph(bool isDirected) : isDirected(isDirected) {}
@@ -59,8 +57,8 @@ public:
         }
     }
 
-    vector<Vertex*> getAllVertices() {
-        vector<Vertex*> vertexList;
+    std::vector<Vertex*> getAllVertices() {
+        std::vector<Vertex*> vertexList;
         for (auto& pair : vertices) {
             vertexList.push_back(pair.second);
         }
@@ -71,8 +69,8 @@ public:
 class Bridge {
     int time;
 
-    void BridgeUtil(Vertex* vertex, set<Edge>& result, map<Vertex*, int>& discovery, 
-                    map<Vertex*, int>& low, map<Vertex*, Vertex*>& parent, map<Vertex*, bool>& visited) {
+    void BridgeUtil(Vertex* vertex, std::set<Edge>& result, std::map<Vertex*, int>& discovery, 
+                    std::map<Vertex*, int>& low, std::map<Vertex*, Vertex*>& parent, std::map<Vertex*, bool>& visited) {
         visited[vertex] = true;
         discovery[vertex] = low[vertex] = ++time;
 
@@ -81,24 +79,24 @@ class Bridge {
                 parent[child] = vertex;
                 BridgeUtil(child, result, discovery, low, parent, visited);
 
-                low[vertex] = min(low[vertex], low[child]);
+                low[vertex] = std::min(low[vertex], low[child]);
 
                 if (low[child] > discovery[vertex]) {
                     result.insert(Edge(vertex, child));
                 }
             } else if (child != parent[vertex]) {
-                low[vertex] = min(low[vertex], discovery[child]);
+                low[vertex] = std::min(low[vertex], discovery[child]);
             }
         }
     }
 
 public:
-    set<Edge> getBridge(Graph& graph) {
-        set<Edge> result;
-        map<Vertex*, int> discovery;
-        map<Vertex*, int> low;
-        map<Vertex*, Vertex*> parent;
-        map<Vertex*, bool> visited;
+    std::set<Edge> getBridge(Graph& graph) {
+        std::set<Edge> result;
+        std::map<Vertex*, int> discovery;
+        std::map<Vertex*, int> low;
+        std::map<Vertex*, Vertex*> parent;
+        std::map<Vertex*, bool> visited;
 
         time = 0;
 
@@ -113,48 +111,48 @@ public:
 };
 
 int main() {
-    srand(time(NULL));
+    std::srand(std::time(NULL));
 
     const int RUN = 5;
     const int MAX_VERTICES = 20;
     const int MAX_EDGES = 200;
 
     for (int i = 1; i <= RUN; i++) {
-        int NUM = 1 + rand() % MAX_VERTICES;
-        int NUMEDGE = 1 + rand() % MAX_EDGES;
+        int NUM = 1 + std::rand() % MAX_VERTICES;
+        int NUMEDGE = 1 + std::rand() % MAX_EDGES;
 
         while (NUMEDGE > NUM * (NUM - 1) / 2)
-            NUMEDGE = 1 + rand() % MAX_EDGES;
+            NUMEDGE = 1 + std::rand() % MAX_EDGES;
 
-        printf("Run %d: %d vertices, %d edges\n", i, NUM, NUMEDGE);
+        std::printf("Run %d: %d vertices, %d edges\n", i, NUM, NUMEDGE);
 
         Graph graph(false);
-        set<pair<int, int>> container;
+        std::set<std::pair<int, int>> container;
 
         for (int j = 1; j <= NUMEDGE; j++) {
-            int a = rand() % NUM;
-            int b = rand() % NUM;
-            pair<int, int> p = make_pair(a, b);
-            pair<int, int> reverse_p = make_pair(b, a);
+            int a = std::rand() % NUM;
+            int b = std::rand() % NUM;
+            std::pair<int, int> p = std::make_pair(a, b);
+            std::pair<int, int> reverse_p = std::make_pair(b, a);
 
             while (a == b || container.find(p) != container.end() || container.find(reverse_p) != container.end()) {
-                a = rand() % NUM;
-                b = rand() % NUM;
-                p = make_pair(a, b);
-                reverse_p = make_pair(b, a);
+                a = std::rand() % NUM;
+                b = std::rand() % NUM;
+                p = std::make_pair(a, b);
+                reverse_p = std::make_pair(b, a);
             }
             container.insert(p);
             graph.addEdge(a, b);
         }
 
         Bridge bridgeFinder;
-        set<Edge> result = bridgeFinder.getBridge(graph);
+        std::set<Edge> result = bridgeFinder.getBridge(graph);
 
         for (const Edge& edge : result) {
-            cout << "Bridge between " << edge.src->id << " and " << edge.dest->id << endl;
+            std::cout << "Bridge between " << edge.src->id << " and " << edge.dest->id << std::endl;
         }
 
-        cout << endl;
+        std::cout << std::endl;
     }
 
     return 0;

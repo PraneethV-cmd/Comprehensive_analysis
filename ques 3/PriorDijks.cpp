@@ -1,55 +1,61 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <climits>
+#include <list>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <queue>
 
 class Graph {
 public:
-    map<int, vector<pair<int, int>>> adjacencyList;
+    std::map<int, std::vector<std::pair<int, int>>> adjacencyList;
 
 public:
     void add_edge(int u, int v, int weight) {
-        adjacencyList[u].push_back(make_pair(v, weight));
-        adjacencyList[v].push_back(make_pair(u, weight));
+        adjacencyList[u].push_back(std::make_pair(v, weight));
+        adjacencyList[v].push_back(std::make_pair(u, weight));
     }
 
     void print() {
-        for (auto i : adjacencyList) {
-            cout << i.first << "->";
-            for (auto j : i.second) {
-                cout << j.first << " " << j.second << " ";
+        for (const auto& i : adjacencyList) {
+            std::cout << i.first << "->";
+            for (const auto& j : i.second) {
+                std::cout << j.first << " " << j.second << " ";
             }
-            cout << endl;
+            std::cout << std::endl;
         }
     }
 
     void shortest_path(int src) {
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minPrioriQueue;
-        map<int, int> dist;
+        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> minPrioriQueue;
+        std::map<int, int> dist;
 
-        for (auto i : adjacencyList) {
+        for (const auto& i : adjacencyList) {
             dist[i.first] = INT_MAX;
         }
 
-        minPrioriQueue.push(make_pair(0, src));
+        minPrioriQueue.push(std::make_pair(0, src));
         dist[src] = 0;
 
         while (!minPrioriQueue.empty()) {
             int u = minPrioriQueue.top().second;
             minPrioriQueue.pop();
 
-            for (auto i : adjacencyList[u]) {
+            for (const auto& i : adjacencyList[u]) {
                 int v = i.first;
                 int weight = i.second;
 
                 if (dist[v] > dist[u] + weight) {
                     dist[v] = dist[u] + weight;
-                    minPrioriQueue.push(make_pair(dist[v], v));
+                    minPrioriQueue.push(std::make_pair(dist[v], v));
                 }
             }
         }
 
-        cout << "Vertex distance from the source" << endl;
-        for (auto i : dist) {
-            cout << i.first << "\t" << i.second << endl;
+        std::cout << "Vertex distance from the source" << std::endl;
+        for (const auto& i : dist) {
+            std::cout << i.first << "\t" << i.second << std::endl;
         }
     }
 };
@@ -60,11 +66,10 @@ public:
 #define MAXWEIGHT 200
 
 int main() {
-    set<pair<int, int>> container;
-    set<pair<int, int>>::iterator it;
+    std::set<std::pair<int, int>> container;
 
-    //For random values every time
-    srand(time(NULL));
+    // For random values every time
+    std::srand(std::time(NULL));
 
     int NUM;    // Number of Vertices
     int NUMEDGE; // Number of Edges
@@ -72,43 +77,43 @@ int main() {
     for (int i = 1; i <= RUN; i++) {
         Graph g;
 
-        NUM = 1 + rand() % MAX_VERTICES;
-        NUMEDGE = 1 + rand() % MAX_EDGES;
+        NUM = 1 + std::rand() % MAX_VERTICES;
+        NUMEDGE = 1 + std::rand() % MAX_EDGES;
 
         while (NUMEDGE > NUM * (NUM - 1) / 2)
-            NUMEDGE = 1 + rand() % MAX_EDGES;
+            NUMEDGE = 1 + std::rand() % MAX_EDGES;
 
-        printf("%d %d\n", NUM, NUMEDGE);
+        std::printf("%d %d\n", NUM, NUMEDGE);
 
         for (int j = 1; j <= NUMEDGE; j++) {
-            int a = rand() % NUM;
-            int b = rand() % NUM;
-            pair<int, int> p = make_pair(a, b);
-            pair<int, int> reverse_p = make_pair(b, a);
+            int a = std::rand() % NUM;
+            int b = std::rand() % NUM;
+            std::pair<int, int> p = std::make_pair(a, b);
+            std::pair<int, int> reverse_p = std::make_pair(b, a);
 
             while (container.find(p) != container.end() ||
-                    container.find(reverse_p) != container.end()) {
-                a = rand() % NUM;
-                b = rand() % NUM;
-                p = make_pair(a, b);
-                reverse_p = make_pair(b, a);
+                   container.find(reverse_p) != container.end()) {
+                a = std::rand() % NUM;
+                b = std::rand() % NUM;
+                p = std::make_pair(a, b);
+                reverse_p = std::make_pair(b, a);
             }
             container.insert(p);
         }
 
-        for (it = container.begin(); it != container.end(); ++it) {
-            int wt = 1 + rand() % MAXWEIGHT;
+        for (auto it = container.begin(); it != container.end(); ++it) {
+            int wt = 1 + std::rand() % MAXWEIGHT;
             g.add_edge(it->first, it->second, wt);
-            printf("%d %d %d\n", it->first, it->second, wt);
+            std::printf("%d %d %d\n", it->first, it->second, wt);
         }
 
         container.clear();
 
         // Choose a random source vertex and find the shortest paths
-        int src = rand() % NUM;
-        cout << "Source Vertex: " << src << endl;
+        int src = std::rand() % NUM;
+        std::cout << "Source Vertex: " << src << std::endl;
         g.shortest_path(src);
-        cout << endl;
+        std::cout << std::endl;
     }
 
     return 0;
