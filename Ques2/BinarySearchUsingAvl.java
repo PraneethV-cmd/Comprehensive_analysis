@@ -1,141 +1,146 @@
-import java.util.Scanner;
-
-class AVLTree {
-
-  class Node{
-    int value;
-    int height;
-    Node left;
-    Node right;
-  
-    public Node(int value){
-      this.value = value;
-      this.height = 1;
-      this.left = null;
-      this.right = null;
-    }
-  }
-
-  int Height(Node key){
-    if (key == null) {
-      return 0;
-    } else {
-      return key.height;
-    }
-  }
-
-  int Balance(Node key){
-    if (key == null) {
-      return 0;
-    } else {
-      return Height(key.right) - Height(key.left);
-    }
-  }
-
-  void updateHeight(Node key){
-    int left = Height(key.left);
-    int right = Height(key.right);
-
-    key.height = Math.max(left, right) + 1;
-  }
-
-  Node rotateLeft(Node x){
-    Node y = x.right;
-    Node z = y.left;
-
-    y.left = x;
-    x.right = z;
-
-    updateHeight(x);
-    updateHeight(y);
-
-    return y;
-  }
-
-  Node rotateRight(Node y){
-    Node x = y.left;
-    Node z = x.right;
-
-    x.right = y;
-    y.left = z;
-
-    updateHeight(y);
-    updateHeight(x);
-
-    return x;
-  }
-
-  Node balanceTree(Node root){
-    updateHeight(root);
-
-    int balance = Balance(root);
-
-    if (balance > 1){
-      if (Balance(root.right) < 0){
-        root.right = rotateRight(root.right);
-        return rotateLeft(root);
-      } else {
-        return rotateLeft(root);
-      }
-    }
-
-    if (balance < -1){
-      if (Balance(root.left) > 0) {
-        root.left = rotateLeft(root.left);
-        return rotateRight(root);
-      } else {
-        return rotateRight(root);
-      }
-    }
-    return root;
-  }
-
-  Node root;
-
-  Node insert(Node root, int key){
-    if (root == null) {
-      return new Node(key);
-    } else if (key < root.value){
-      root.left = insert(root.left, key);
-    } else {
-      root.right = insert(root.right, key);
-    }
-    return balanceTree(root);
-  }
-
-  Node BinarySearch(Node root, int key){
-    if (root == null || root.value == key){
-      return root;
-    }
-    if (root.value < key && root.right != null){
-      return BinarySearch(root.right, key);
-    } else {
-      return BinarySearch(root.left, key);
-    }
-  }
-}
-
+import java.util.*;
+import java.time.Instant;
+import java.time.Duration;
 public class BinarySearchUsingAvl {
-  public static void main(String args[]){
-    Scanner scan = new Scanner(System.in);
-    AVLTree avl_tree = new AVLTree();
+    static int comparisons = 0;
+    static int basicOperations = 0;
 
-    while(true){
-      int val = scan.nextInt();
-      if(val == -1){
-        break;
-      }
-      avl_tree.root = avl_tree.insert(avl_tree.root, val);
+    public static void main(String[] args) {
+        Scanner scanIn = new Scanner(System.in);
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+        // Takes the number of elements to be inserted into the AVL tree
+        System.out.print("Enter the number of elements to insert into the AVL tree: ");
+        int numOfElements = scanIn.nextInt();
+
+        AVLTree avl_tree = new AVLTree();
+        Random rand = new Random();
+
+        // Generating random elements and inserting into the AVL tree
+        for (int i = 0; i < numOfElements; i++) {
+            int val = rand.nextInt(numOfElements);
+            avl_tree.root = avl_tree.insert(avl_tree.root, val);
+            basicOperations++;  // Tracking basic operation
+        }
+
+        // Record the start time for the search
+        Instant start = Instant.now();
+
+        // Perform binary search in the AVL tree
+        System.out.print("Enter the element to search in the AVL tree: ");
+        int searchValue = scanIn.nextInt();
+        AVLTree.Node node = avl_tree.BinarySearch(avl_tree.root, searchValue);
+
+        // Record the end time for the search
+        Instant end = Instant.now();
+
+        // Calculate the duration of the search
+        Duration duration = Duration.between(start, end);
+        long timeTaken = duration.toMillis();
+
+        // Calculate the total memory used 
+        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        long memoryUsed = memoryAfter - memoryBefore;
+
+        // Output the metrics
+        System.out.println("Time taken for binary search: " + timeTaken + " ms");
+        System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
+        System.out.println("Number of comparisons: " + comparisons);
+        System.out.println("Number of basic operations: " + basicOperations);
+
+        // Output the result of the search
+        if (node != null) {
+            System.out.println("Found: " + node.value);
+        } else {
+            System.out.println("Not Found");
+        }
+
+        scanIn.close();
     }
 
-    scan.close();
+    static class AVLTree {
 
-    AVLTree.Node node = avl_tree.BinarySearch(avl_tree.root, 12);
-    if (node != null) {
-      System.out.println("Found: " + node.value);
-    } else {
-      System.out.println("Not Found");
+        class Node {
+            int value;
+            int height;
+            Node left, right;
+
+            Node(int value) {
+                this.value = value;
+                this.height = 1;
+                this.left = this.right = null;
+            }
+        }
+
+        Node root;
+
+        int Height(Node node) {
+            return node == null ? 0 : node.height;
+        }
+
+        int Balance(Node node) {
+            return node == null ? 0 : Height(node.right) - Height(node.left);
+        }
+
+        void updateHeight(Node node) {
+            node.height = Math.max(Height(node.left), Height(node.right)) + 1;
+        }
+
+        Node rotateLeft(Node x) {
+            Node y = x.right;
+            Node z = y.left;
+            y.left = x;
+            x.right = z;
+            updateHeight(x);
+            updateHeight(y);
+            return y;
+        }
+
+        Node rotateRight(Node y) {
+            Node x = y.left;
+            Node z = x.right;
+            x.right = y;
+            y.left = z;
+            updateHeight(y);
+            updateHeight(x);
+            return x;
+        }
+
+        Node balanceTree(Node node) {
+            updateHeight(node);
+            int balance = Balance(node);
+
+            if (balance > 1) {
+                if (Balance(node.right) < 0) {
+                    node.right = rotateRight(node.right);
+                }
+                return rotateLeft(node);
+            }
+
+            if (balance < -1) {
+                if (Balance(node.left) > 0) {
+                    node.left = rotateLeft(node.left);
+                }
+                return rotateRight(node);
+            }
+            return node;
+        }
+
+        Node insert(Node node, int key) {
+            if (node == null) return new Node(key);
+            if (key < node.value) node.left = insert(node.left, key);
+            else node.right = insert(node.right, key);
+            return balanceTree(node);
+        }
+
+        Node BinarySearch(Node node, int key) {
+            comparisons++;  // Increment comparison count
+            if (node == null || node.value == key) return node;
+            basicOperations++;  // Increment basic operation count
+            if (key < node.value) return BinarySearch(node.left, key);
+            return BinarySearch(node.right, key);
+        }
     }
-  }
 }
-

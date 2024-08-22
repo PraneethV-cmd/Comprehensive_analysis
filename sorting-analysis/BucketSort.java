@@ -3,7 +3,6 @@ import java.time.Instant;
 import java.time.Duration;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.function.Function;
 
 public class BucketSort {
 
