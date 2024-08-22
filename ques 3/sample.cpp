@@ -1,15 +1,9 @@
-#include<iostream>
-#include<climits>
-#include<list>
-#include<vector>
-#include<algorithm>
-#include<map>
-#include<set>
+#include <bits/stdc++.h>
 using namespace std;
 
 class Graph {
 public:
-    map<int, list<int> > adjacencyList;
+    map<int, list<int>> adjacencyList;
 
 public:
     void add_edge(int u, int v) {
@@ -83,8 +77,8 @@ public:
 #define MAX_EDGES 200
 
 int main() {
-    set<pair<int, int> > container;
-    set<pair<int, int> >::iterator it;
+    set<pair<int, int>> container;
+    set<pair<int, int>>::iterator it;
 
     srand(time(NULL));
 
