@@ -21,3 +21,21 @@
     TODO: 5. We have to check whether there is no direct path to the destination meaning there should be no ladder or snake from 1 to n*n 
 -->
 
+<!-- NOTE: TO sai krishna 
+
+    -> complete adding proper coments to every single sorting algorithm
+    -> for every single sorting algorithm, make sure it works
+    -> for every single graph based question, add the following graph based random genearting code .
+
+
+// THE RANDOM GENERATING CODE  
+
+1. https://www.geeksforgeeks.org/test-case-generation-set-4-random-directed-undirected-weighted-and-unweighted-graphs/
+
+Find which graph algorithm uses directed/undirected and weighted/unweighted graphs
+and then use that.
+
+-> Add random input case for the second question
+-> and add comments for the second question as well
+
+-->
