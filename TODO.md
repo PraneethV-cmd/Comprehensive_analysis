@@ -23,7 +23,8 @@
 
 <!-- NOTE: TO sai krishna 
 
-    -> complete adding proper coments to every single sorting algorithm
+    -> complete adding proper coments to every single sorting algorithm. 
+        Checked. But for every sorting code time complexity shows 0ms
     -> for every single sorting algorithm, make sure it works
     -> for every single graph based question, add the following graph based random genearting code .
 
