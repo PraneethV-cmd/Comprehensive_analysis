@@ -1,17 +1,12 @@
 # general to-do 
 
-<!-- 
+ 
     TODO: Complete 4th question 
     TODO: Completed 2nd question 
     TODO: Complete 1st question
     TODO: Complete 3rd question
--->
 
-<!-- 
-    PERF: 
- -->
 
-<!--
     NOTE: IN the fourth question we have to ensure these things: 
 
     TODO: 1. We have to detect whether there is a cycle in the graph
@@ -19,9 +14,8 @@
     TODO: 3. We have to find the and check if there is any intersection of snakes and the ladders
     TODO: 4. We have to find and check whether there is an actual path to BFS 
     TODO: 5. We have to check whether there is no direct path to the destination meaning there should be no ladder or snake from 1 to n*n 
--->
 
-<!-- NOTE: TO sai krishna 
+ NOTE: TO sai krishna 
 
     -> complete adding proper coments to every single sorting algorithm. 
         Checked. But for every sorting code time complexity shows 0ms
