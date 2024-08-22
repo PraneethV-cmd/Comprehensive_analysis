@@ -17,6 +17,10 @@
 
  NOTE: TO sai krishna 
 
+    -> for the third question do the following:
+       1. Barovka
+       2. bellman ford
+       3. bridges
     -> complete adding proper coments to every single sorting algorithm. 
         Checked. But for every sorting code time complexity shows 0ms
     -> for every single sorting algorithm, make sure it works
