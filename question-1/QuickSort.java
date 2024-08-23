@@ -54,7 +54,7 @@ public class QuickSort {
     long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
 
     //Takes size of the array as an input from the user
-    System.out.print("Enter the size of the array: ");
+    //System.out.print("Enter the size of the array: ");
     int sizeOfArr = scanIn.nextInt();
 
     int[] A = new int[sizeOfArr];
@@ -70,19 +70,21 @@ public class QuickSort {
 
     //Record the start time
     Instant start = Instant.now();
+    long startTime = System.nanoTime();
     //Performs quick sort
     quicksort(A, l, h);
     //Record the end time
     Instant end = Instant.now();
+    long endTime = System.nanoTime();
 
     Duration duration = Duration.between(start, end);
-    long timeTaken = duration.toMillis();
+    long timeTaken = endTime - startTime;
 
     //Calculate the total memory used during the sort
     long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
     long memoryUsed = memoryAfter - memoryBefore;
 
-    System.out.println("Time complexity: " + timeTaken + " ms");
+    System.out.println("Time taken: " + timeTaken/1_000_000.0 + " ms");
     System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
     System.out.println("Number of comparisons: " + comparisons);
     System.out.println("Number of swaps: " + swaps);
