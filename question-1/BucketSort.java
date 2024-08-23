@@ -93,7 +93,7 @@ public class BucketSort {
 
         // Generating random elements in the array
         for (int i = 0; i < sizeOfArr; i++) {
-            arr[i] = rand.nextInt(sizeOfArr);
+            arr[i] = scanIn.nextInt();
         }
 
         //Print the original array
@@ -105,26 +105,28 @@ public class BucketSort {
 
         //Record the start time
         Instant start = Instant.now();
+        long startTime = System.nanoTime();
         //Perform bucket sort
         bucket_sort(arr);
         //Record the end time
         Instant end = Instant.now();
+        long endTime = System.nanoTime();
 
         //Calculate the duration of the sort
         Duration duration = Duration.between(start, end);
-        long timeTaken = duration.toMillis();
+        long timeTaken = endTime - startTime;
 
-        //Calculate the total memory used 
+        //the below snippet will calculate the total memory used by finding the free memeory and the used memeory duiring runtime 
         long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
         long memoryUsed = memoryAfter - memoryBefore;
 
-        System.out.println("Time complexity: " + timeTaken + " ms");
+        System.out.println("Time complexity: " + timeTaken/1_000_000.0+ " ms");
         System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
         System.out.println("Number of comparisons: " + comparisons);
         System.out.println("Number of swaps: " + swaps);
         System.out.println("Number of basic operations: " + basicOperations);
 
-        //Display the sorted array
+        //the below snippet will display the sorted array
         System.out.println("Sorted array:");
         for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i] + " ");

@@ -62,7 +62,7 @@ public class QuickSort {
 
     // Generating random elements in the array
     for (int i = 0; i < sizeOfArr; i++) {
-      A[i] = rand.nextInt(sizeOfArr);
+      A[i] = scanIn.nextInt();
     }
 
     int l = 0;
