@@ -1,110 +1,71 @@
-import java.time.Instant;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
+import java.util.LinkedList;
 
 public class RadixSort {
 
-  // Counters for tracking the operations of the algorithm 
-  static int comparisons = 0;
-  static int swaps = 0;
-  static int basicOperations = 0;
+  void radixSort(int arr[], int size, int place){
+    int[] binCount = new int[10];
+    for(int i = 0 ;i < 10; i++){
+      binCount[i] = 0;
+    }
 
-  // Function to get the maximum value in the array
-  static int getMax(int[] A, int n) {
-    int max = A[0];
-    for (int i = 1; i < n; i++) {
-      comparisons++;
-      if (A[i] > max) {
-        max = A[i];
+    for(int i = 0 ; i < size; i ++){
+      int x = arr[i]/place;
+      x = x%10;
+      binCount[x] ++;
+    }
+
+    int[] output = new int[size];
+    for(int i = 1 ; i < size; i ++){
+      binCount[i] += binCount[i-1];
+    }
+
+    for(int i = size-1; i > 0; i--){
+      int x = arr[i]/place;
+      x %= 10;
+      output[binCount[x] - 1] = arr[i];
+      binCount[x]--;
+    }
+
+    for(int i = 0 ; i < size ; i ++){
+      arr[i] = output[i];
+    }
+  }
+
+  void countingSort(int arr[], int size){
+    int max = arr[0];
+
+    for(int i = 0 ; i < size; i++){
+      if(arr[i] > max){
+        max = arr[i];
       }
-      basicOperations++;
-    }
-    return max;
-  }
-
-  // Performs count sort
-  static void countSort(int[] A, int n, int exp) {
-    int[] output = new int[n];
-    int[] count = new int[10];
-    Arrays.fill(count, 0);
-
-    for (int i = 0; i < n; i++) {
-      count[(A[i] / exp) % 10]++;
-      basicOperations++;
-    }
-
-    for (int i = 1; i < 10; i++) {
-      count[i] += count[i - 1];
-      basicOperations++;
-    }
-
-    for (int i = n - 1; i >= 0; i--) {
-      output[count[(A[i] / exp) % 10] - 1] = A[i];
-      count[(A[i] / exp) % 10]--;
-      swaps++;
-      basicOperations++;
-    }
-
-    for (int i = 0; i < n; i++) {
-      A[i] = output[i];
-      basicOperations++;
-    }
-  }
-
-  static void radixSort(int[] A, int n) {
-    int max = getMax(A, n);
-
-    for (int exp = 1; max / exp > 0; exp *= 10) {
-      countSort(A, n, exp);
-    }
-  }
-
-  public static void main(String args[]) {
-    Scanner scanIn = new Scanner(System.in);
-
-    Runtime runtime = Runtime.getRuntime();
-    runtime.gc();
-    long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
-    //Takes size of the array as an input from the user
-    System.out.print("Enter the size of the array: ");
-    int sizeOfArr = scanIn.nextInt();
-
-    int[] A = new int[sizeOfArr];
-    Random rand = new Random();
-
-    // Generating random elements in the array
-    for (int i = 0; i < sizeOfArr; i++) {
-      A[i] = rand.nextInt(sizeOfArr);
     }
     
-    //Record the start time
-    Instant start = Instant.now();
-    //Performs the radix sort
-    radixSort(A, sizeOfArr);
-    //Record the end time
-    Instant end = Instant.now();
+    for(int place = 1 ; max/place > 0 ; place *= 10){
+      radixSort(arr, size, place);
+    }
+  }
 
-    Duration duration = Duration.between(start, end);
-    long timeTaken = duration.toMillis();
+ public static void main(String[] args) {
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter the number of elements: ");
+    int n = scanner.nextInt();
+    int[] arr = new int[n];
 
-    //Calculate the memory used during the sort
-    long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
-    long memoryUsed = memoryAfter - memoryBefore;
-
-    System.out.println("Time complexity: " + timeTaken + " ms");
-    System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
-    System.out.println("Number of comparisons: " + comparisons);
-    System.out.println("Number of swaps: " + swaps);
-    System.out.println("Number of basic operations: " + basicOperations);
-
-    // Printing sorted array
-    System.out.println("Sorted array:");
-    for (int i = 0; i < A.length; i++) {
-      System.out.print(A[i] + " ");
+    System.out.println("Enter the elements:");
+    for (int i = 0; i < n; i++) {
+      arr[i] = scanner.nextInt();
     }
 
-    scanIn.close();
+    RadixSort sorter = new RadixSort();
+    sorter.countingSort(arr, n);
+
+    System.out.println("Sorted array:");
+    for (int num : arr) {
+      System.out.print(num + " ");
+    }
+    System.out.println();
+
+    scanner.close();
   }
 }
