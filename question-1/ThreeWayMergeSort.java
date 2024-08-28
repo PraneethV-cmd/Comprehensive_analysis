@@ -1,172 +1,140 @@
-import java.time.Instant;
-import java.time.Duration;
-import java.util.Random;
 import java.util.Scanner;
 
-public class ThreeWayMergeSort {
+public class ThreeWayMergeSort{
 
-    // Counters for tracking the operations of the algorithm 
-    static int comparisons = 0;
-    static int swaps = 0;
-    static int basicOperations = 0;
-
-    // Main function to start the three-way merge sort process
-    static void threeWayMergeSort(int[] array, int low, int high) {
-        // Base case: if the array has one or zero elements, it is already sorted
-        if (low >= high) {
-            return;
-        }
-
-        // Calculate the first and second midpoints to divide the array into three parts
-        int firstMid = low + (high - low) / 3;
-        int secondMid = low + 2 * (high - low) / 3 + 1;
-
-        // Recursively sort the three parts
-        threeWayMergeSort(array, low, firstMid);
-        threeWayMergeSort(array, firstMid + 1, secondMid);
-        threeWayMergeSort(array, secondMid + 1, high);
-
-        // Merge the three sorted parts in place
-        mergeInPlace(array, low, firstMid, secondMid, high);
+  public static void preMergeSort(Integer[] arr){
+    if(arr == null){
+      return;
     }
 
-    // Function to merge three sorted segments of the array in place
-    static void mergeInPlace(int[] array, int low, int firstMid, int secondMid, int high) {
-        int i = low;
-        int j = firstMid + 1;
-        int k = secondMid + 1;
+    Integer[] tempArr = new Integer[arr.length];
 
-        while (i <= firstMid && j <= secondMid && k <= high) {
-            comparisons += 2;
-            if (array[i] <= array[j]) {
-                if (array[i] <= array[k]) {
-                    i++; // `array[i]` is in the correct place
-                } else {
-                    rotateRight(array, i, k);
-                    swaps++;
-                    i++;
-                    firstMid++;
-                    j++;
-                    k++;
-                }
-            } else {
-                if (array[j] <= array[k]) {
-                    rotateRight(array, i, j);
-                    swaps++;
-                    i++;
-                    firstMid++;
-                    j++;
-                } else {
-                    rotateRight(array, i, k);
-                    swaps++;
-                    i++;
-                    firstMid++;
-                    j++;
-                    k++;
-                }
-            }
-            basicOperations++;
-        }
-
-        // Merge any remaining elements between `i` and `firstMid`, `j` and `secondMid`, and `k` and `high`
-        while (i <= firstMid && j <= secondMid) {
-            comparisons++;
-            if (array[i] <= array[j]) {
-                i++;
-            } else {
-                rotateRight(array, i, j);
-                swaps++;
-                i++;
-                firstMid++;
-                j++;
-            }
-            basicOperations++;
-        }
-
-        while (j <= secondMid && k <= high) {
-            comparisons++;
-            if (array[j] <= array[k]) {
-                j++;
-            } else {
-                rotateRight(array, j, k);
-                swaps++;
-                j++;
-                secondMid++;
-                k++;
-            }
-            basicOperations++;
-        }
-
-        while (i <= firstMid && k <= high) {
-            comparisons++;
-            if (array[i] <= array[k]) {
-                i++;
-            } else {
-                rotateRight(array, i, k);
-                swaps++;
-                i++;
-                firstMid++;
-                k++;
-            }
-            basicOperations++;
-        }
+    for(int i = 0 ; i < arr.length ; i++){
+      tempArr[i] = arr[i];
     }
 
-    // Helper function to rotate elements between indices `start` and `end` in place
-    static void rotateRight(int[] array, int start, int end) {
-        int temp = array[end];
-        for (int i = end; i > start; i--) {
-            array[i] = array[i - 1];
-        }
-        array[start] = temp;
-        swaps++;
-        basicOperations++;
+    mergeSort(tempArr, 0, arr.length, arr);
+
+    for(int i = 0 ; i < tempArr.length; i++){
+      arr[i] = tempArr[i];
+    }
+  }
+
+  public static void mergeSort(Integer[] arr, int low, int high, Integer[] destArr){
+    if(high - low < 2){
+      return ;
     }
 
-    public static void main(String[] args) {
-        Scanner scanIn = new Scanner(System.in);
+    int mid1 = low + ((high - low) / 3);
+    int mid2 = low + 2 * ((high - low) / 3) + 1;
 
-        Runtime runtime = Runtime.getRuntime();
-        runtime.gc();
-        long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
+    mergeSort(destArr, low, mid1, arr);
+    mergeSort(destArr, mid1, mid2, arr);
+    mergeSort(destArr, mid2, high, arr);
 
-        //Takes size of the array as an input from the user
-        System.out.print("Enter the size of the array: ");
-        int sizeOfArr = scanIn.nextInt();
+    merge(destArr, low, mid1, mid2, high, arr);
+  }
 
-        int[] array = new int[sizeOfArr];
-        Random rand = new Random();
+  public static void merge(Integer[] arr, int low, int mid1, int mid2, int high, Integer[] destArr){
+    int i = low;
+    int j = mid1;
+    int k = mid2;
+    int l = low;
 
-        // Generating random elements in the array
-        for (int i = 0; i < sizeOfArr; i++) {
-            array[i] = rand.nextInt(sizeOfArr);
+    while((i < mid1) && (j < mid2) && (k < high)){
+      if(arr[i] < arr[j]){
+        if(arr[i] < arr[k]){
+          destArr[l] = arr[i];
+          l = l + 1;
+          i = i + 1;
+        }else{
+          destArr[l] = arr[k];
+          l = l + 1;
+          k = k + 1;
         }
-
-        //Record the start time
-        Instant start = Instant.now();
-        //Performs threeWayMergeSort
-        threeWayMergeSort(array, 0, array.length - 1);
-        Instant end = Instant.now();
-
-        Duration duration = Duration.between(start, end);
-        long timeTaken = duration.toMillis();
-
-        //Calculate the total memory used during the sort
-        long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
-        long memoryUsed = memoryAfter - memoryBefore;
-
-        System.out.println("Time complexity: " + timeTaken + " ms");
-        System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
-        System.out.println("Number of comparisons: " + comparisons);
-        System.out.println("Number of swaps: " + swaps);
-        System.out.println("Number of basic operations: " + basicOperations);
-
-        // Printing sorted array
-        System.out.println("Sorted array:");
-        for (int num : array) {
-            System.out.print(num + " ");
+      }else{
+        if(arr[j] < arr[k]){
+          destArr[l] = arr[j];
+          l = l + 1;
+          j = j + 1;
+        }else{
+          destArr[l] = arr[k];
+          l = l + 1;
+          k = k + 1;
         }
-
-        scanIn.close();
+      } 
     }
+
+    while((i < mid1) && (j < mid2)){
+      if(arr[i] < arr[j]){
+        destArr[l] = arr[i];
+        l = l + 1;
+        i = i + 1;
+      }else{
+        destArr[l] = arr[j];
+        l = l + 1;
+        j = j + 1;
+      }
+    }
+
+    while((j < mid2) && (k < high)){
+      if(arr[j] < arr[k]){
+        destArr[l] = arr[j];
+        l = l + 1;
+        j = j + 1;
+      }else{
+        destArr[l] = arr[k];
+        l = l + 1;
+        k = k + 1;
+      }
+    }
+
+    while(( i < mid1 ) && ( k < high )){
+      if(arr[i] < arr[k]){
+        destArr[l] = arr[i];
+        l = l + 1;
+        i = i + 1;
+      }else{
+        destArr[l] = arr[k];
+        l = l + 1;
+        k = k + 1;
+      }
+    }
+
+    while ( i < mid1){
+      destArr[l] = arr[i];
+      l = l + 1;
+      i = i + 1;
+    }
+
+    while( j < mid2){
+      destArr[l] = arr[j];
+      l = l + 1;
+      j = j + 1;
+    }
+
+    while(k < high){
+      destArr[l] = arr[k];
+      k = k + 1;
+      l = l + 1;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner scanIn = new Scanner(System.in);
+    int size = scanIn.nextInt();
+
+    Integer[] arr = new Integer[size];
+
+    for(int i = 0 ; i < size ; i++){
+      arr[i] = scanIn.nextInt();
+    }
+
+    preMergeSort(arr);
+
+    for( int i = 0 ; i < arr.length ; i++){
+      System.out.println(arr[i]);
+    }
+    scanIn.close();
+  }
 }

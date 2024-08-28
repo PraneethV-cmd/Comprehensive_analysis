@@ -85,7 +85,7 @@ public class QuickSort {
     long memoryUsed = memoryAfter - memoryBefore;
 
     System.out.println("Time taken: " + timeTaken/1_000_000.0 + " ms");
-    System.out.println("Memory used: " + memoryUsed / 1024 + " KB");
+    System.out.println("Memory used: " + memoryUsed/1024+ " KB");
     System.out.println("Number of comparisons: " + comparisons);
     System.out.println("Number of swaps: " + swaps);
     System.out.println("Number of basic operations: " + basicOperations);

@@ -67,16 +67,64 @@ public:
 
       for(auto i : adjacencyList){
         for(auto j : i.second){
+          int root_u = find_vertex(i.first,parent);
+          int root_v = find_vertex(j.first,parent);
 
+          if(root_u != root_v){
+            if(min_edge[root_u] == -1 || min_edge[root_u] > j.second){
+              min_edge[root_u] = j.second;
+            }
+            if(min_edge[root_v] == -1 || min_edge[root_v] > j.second){
+              min_edge[root_v] = j.second;
+            }
+          }
+        }
+      }
+
+      for(int j = 0 ; j < nodeCount ; j++){
+        if(min_edge[j] != -1){
+          for(auto i : this->adjacencyList[j]){
+            if (i.second == min_edge[j]){
+              int root_u = find_vertex(j, parent);
+              int root_v = find_vertex(i.first, parent);
+
+              if(root_u != root_v){
+                mstWeight += i.second;
+                union_vertices(j, i.first, parent,rank);
+                std::cout << "added edge ( " << j << " <-> " << i.first << " ) \n";
+                std::cout << "added weight: " << i.second << "\n";
+                componentCount -= 1;
+              }
+            }
+          }
         }
       }
     }
-  }
 
+    std::cout << "total weight of the minimum spanning tree is : " << mstWeight << std::endl;
+  }
 };
 
-int main()
-{
-  int n = 10;
-  Graph g(n);
+int main() {
+    Graph g(9);
+
+    g.add_edge(0, 1, 4);
+    g.add_edge(0, 6, 7);
+    g.add_edge(1, 6, 11);
+    g.add_edge(1, 7, 20);
+    g.add_edge(1, 2, 9);
+    g.add_edge(2, 3, 6);
+    g.add_edge(2, 4, 2);
+    g.add_edge(3, 4, 10);
+    g.add_edge(3, 5, 5);
+    g.add_edge(4, 5, 15);
+    g.add_edge(4, 7, 1);
+    g.add_edge(4, 8, 5);
+    g.add_edge(5, 8, 12);
+    g.add_edge(6, 7, 1);
+    g.add_edge(7, 8, 3);
+
+    g.barovka();
+
+    return 0;
 }
