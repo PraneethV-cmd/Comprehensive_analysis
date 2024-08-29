@@ -72,7 +72,7 @@ public class HeapSort {
 
     // Generating random elements in the array
     for(int i = 0 ; i < sizeOfArr ; i++){
-      A[i] = rand.nextInt(sizeOfArr);
+      A[i] = scanIn.nextInt();
     }
 
     //Record the start time
