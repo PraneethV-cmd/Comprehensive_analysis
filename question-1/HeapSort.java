@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class HeapSort {
@@ -68,7 +67,6 @@ public class HeapSort {
     int sizeOfArr = scanIn.nextInt();
 
     int[] A = new int[sizeOfArr];
-    Random rand  = new Random();
 
     // Generating random elements in the array
     for(int i = 0 ; i < sizeOfArr ; i++){
