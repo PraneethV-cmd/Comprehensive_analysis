@@ -1,7 +1,6 @@
 import java.util.LinkedList;
 import java.time.Instant;
 import java.time.Duration;
-import java.util.Random;
 import java.util.Scanner;
 
 public class BucketSort {
@@ -89,7 +88,6 @@ public class BucketSort {
         int sizeOfArr = scanIn.nextInt();
 
         int[] arr = new int[sizeOfArr];
-        Random rand = new Random();
 
         // Generating random elements in the array
         for (int i = 0; i < sizeOfArr; i++) {

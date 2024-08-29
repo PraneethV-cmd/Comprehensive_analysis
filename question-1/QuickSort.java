@@ -1,7 +1,4 @@
-import java.util.Random;
 import java.util.Scanner;
-import java.time.Instant;
-import java.time.Duration;
 
 public class QuickSort {
 
@@ -58,7 +55,6 @@ public class QuickSort {
     int sizeOfArr = scanIn.nextInt();
 
     int[] A = new int[sizeOfArr];
-    Random rand = new Random();
 
     // Generating random elements in the array
     for (int i = 0; i < sizeOfArr; i++) {
@@ -69,15 +65,13 @@ public class QuickSort {
     int h = A.length - 1;
 
     //Record the start time
-    Instant start = Instant.now();
     long startTime = System.nanoTime();
     //Performs quick sort
     quicksort(A, l, h);
     //Record the end time
-    Instant end = Instant.now();
     long endTime = System.nanoTime();
 
-    Duration duration = Duration.between(start, end);
+  
     long timeTaken = endTime - startTime;
 
     //Calculate the total memory used during the sort
