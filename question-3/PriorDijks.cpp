@@ -29,7 +29,7 @@ public:
         }
     }
 
-    //This function is used to find the shortes path using the Dijkstra algorithm. THis uses the priority queue to store vertices and maps the shortest distance.
+    //This function is used to find the shortes path using the Dijkstra algorithm. This uses the priority queue to store vertices and maps the shortest distance.
     void shortest_path(int src) {
         std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>> minPrioriQueue;
         std::map<int, int> dist;

@@ -1,162 +1,124 @@
 #include <iostream>
+#include <list>
+#include <utility>
 #include <vector>
-#include <stack>
-#include <unordered_set>
-#include <unordered_map>
+#include <map>
 #include <set>
-#include <cstdlib>
-#include <ctime>
+#include <climits>
+#include <algorithm>
+#include <stack>
 
-class Vertex {
-public:
-    int id;
-    std::vector<std::pair<Vertex*, int>> adjVertices; // Pair of adjacent vertex and edge weight
-
-    Vertex(int id) : id(id) {}
-
-    void addEdge(Vertex* v, int weight) {
-        adjVertices.push_back({v, weight});
-    }
-};
-
+// This class represents a graph
 class Graph {
-private:
-    std::unordered_map<int, Vertex*> vertices;
-    bool directed;
-
 public:
-    Graph(bool directed = false) : directed(directed) {}
+    std::map<int, std::list<std::pair<int, int>>> adjacencyList; // Adjacency list representation of the graph
 
-    void addEdge(int from, int to, int weight) {
-        if (vertices.find(from) == vertices.end())
-            vertices[from] = new Vertex(from);
-        if (vertices.find(to) == vertices.end())
-            vertices[to] = new Vertex(to);
-        vertices[from]->addEdge(vertices[to], weight);
+    // This function adds an edge to the graph
+    void add_edge(int u, int v, int weight) {
+        adjacencyList[u].push_back(std::make_pair(v, weight));
+        adjacencyList[v].push_back(std::make_pair(u, weight));
     }
 
-    std::vector<Vertex*> getAllVertices() {
-        std::vector<Vertex*> result;
-        for (auto& pair : vertices) {
-            result.push_back(pair.second);
-        }
-        return result;
-    }
-
-    Vertex* getVertex(int id) {
-        return vertices[id];
-    }
-
-    Graph reverseGraph() {
-        Graph reversedGraph(true);
-        for (auto& pair : vertices) {
-            Vertex* v = pair.second;
-            for (auto& adj : v->adjVertices) {
-                reversedGraph.addEdge(adj.first->id, v->id, adj.second);
+    // This function prints the graph
+    void print() {
+        for (auto i : adjacencyList) {
+            std::cout << i.first << " -> ";
+            for (auto j : i.second) {
+                std::cout << "Vertex: " << j.first << ", Weight: " << j.second << " ";
             }
+            std::cout << std::endl;
         }
-        return reversedGraph;
     }
-};
 
-class StronglyConnectedComponent {
-public:
-    std::vector<std::set<Vertex*>> scc(Graph& graph) {
-        std::stack<Vertex*> finishStack;
-        std::unordered_set<Vertex*> visited;
+    // Kosaraju's Algorithm for finding Strongly Connected Components (SCCs)
+    void kosaraju() {
+        std::stack<int> Stack;
+        std::map<int, bool> visited;
+        std::map<int, std::list<int>> transpose;
 
-        for (Vertex* vertex : graph.getAllVertices()) {
-            if (visited.find(vertex) == visited.end()) {
-                DFSUtil(vertex, visited, finishStack);
+        // Step 1: Fill vertices in stack according to their finishing times
+        for (auto i : adjacencyList) {
+            if (!visited[i.first]) {
+                fillOrder(i.first, visited, Stack);
             }
         }
 
-        Graph reverseGraph = graph.reverseGraph();
+        // Step 2: Get the transpose of the graph
+        transposeGraph(transpose);
 
+        // Step 3: Process all vertices in order defined by stack
         visited.clear();
-        std::vector<std::set<Vertex*>> result;
-        while (!finishStack.empty()) {
-            Vertex* vertex = reverseGraph.getVertex(finishStack.top()->id);
-            finishStack.pop();
-            if (visited.find(vertex) == visited.end()) {
-                std::set<Vertex*> component;
-                DFSUtilForReverseGraph(vertex, visited, component);
-                result.push_back(component);
+        std::cout << "Strongly Connected Components:" << std::endl;
+        while (!Stack.empty()) {
+            int v = Stack.top();
+            Stack.pop();
+
+            if (!visited[v]) {
+                std::set<int> component;
+                DFS(transpose, v, visited, component);
+                for (int vertex : component) {
+                    std::cout << vertex << " ";
+                }
+                std::cout << std::endl;
             }
         }
-        return result;
     }
 
 private:
-    void DFSUtil(Vertex* vertex, std::unordered_set<Vertex*>& visited, std::stack<Vertex*>& finishStack) {
-        visited.insert(vertex);
-        for (auto& adj : vertex->adjVertices) {
-            if (visited.find(adj.first) == visited.end()) {
-                DFSUtil(adj.first, visited, finishStack);
+    // A recursive function to fill the stack with vertices according to their finishing times
+    void fillOrder(int v, std::map<int, bool>& visited, std::stack<int>& Stack) {
+        visited[v] = true;
+        for (auto i : adjacencyList[v]) {
+            if (!visited[i.first]) {
+                fillOrder(i.first, visited, Stack);
             }
         }
-        finishStack.push(vertex);
+        Stack.push(v);
     }
 
-    void DFSUtilForReverseGraph(Vertex* vertex, std::unordered_set<Vertex*>& visited, std::set<Vertex*>& component) {
-        visited.insert(vertex);
-        component.insert(vertex);
-        for (auto& adj : vertex->adjVertices) {
-            if (visited.find(adj.first) == visited.end()) {
-                DFSUtilForReverseGraph(adj.first, visited, component);
+    // Function to get the transpose of the graph
+    void transposeGraph(std::map<int, std::list<int>>& transpose) {
+        for (auto i : adjacencyList) {
+            for (auto j : i.second) {
+                transpose[j.first].push_back(i.first);
+            }
+        }
+    }
+
+    // A function to perform DFS on the transposed graph and collect all vertices in a component
+    void DFS(std::map<int, std::list<int>>& transpose, int v, std::map<int, bool>& visited, std::set<int>& component) {
+        visited[v] = true;
+        component.insert(v);
+        for (auto i : transpose[v]) {
+            if (!visited[i]) {
+                DFS(transpose, i, visited, component);
             }
         }
     }
 };
 
 int main() {
-    std::srand(std::time(0));
+    Graph g;
+    int num_vertices, num_edges;
 
-    const int RUN = 5;
-    const int MAX_VERTICES = 20;
-    const int MAX_EDGES = 200;
-    const int MAXWEIGHT = 200;
+    std::cout << "Enter the number of vertices: ";
+    std::cin >> num_vertices;
 
-    for (int i = 1; i <= RUN; i++) {
-        int NUM = 1 + std::rand() % MAX_VERTICES;
-        int NUMEDGE = 1 + std::rand() % MAX_EDGES;
+    std::cout << "Enter the number of edges: ";
+    std::cin >> num_edges;
 
-        while (NUMEDGE > NUM * (NUM - 1) / 2)
-            NUMEDGE = 1 + std::rand() % MAX_EDGES;
-
-        Graph graph(true);
-
-        std::set<std::pair<int, int>> container;
-
-        for (int j = 1; j <= NUMEDGE; j++) {
-            int a = 1 + std::rand() % NUM;
-            int b = 1 + std::rand() % NUM;
-            std::pair<int, int> p = std::make_pair(a, b);
-
-            while (container.find(p) != container.end() || a == b) {
-                a = 1 + std::rand() % NUM;
-                b = 1 + std::rand() % NUM;
-                p = std::make_pair(a, b);
-            }
-            container.insert(p);
-            int wt = 1 + std::rand() % MAXWEIGHT;
-            graph.addEdge(a, b, wt);
-        }
-
-        StronglyConnectedComponent scc;
-        std::vector<std::set<Vertex*>> result = scc.scc(graph);
-
-        std::cout << "Graph " << i << ": " << NUM << " vertices, " << NUMEDGE << " edges" << std::endl;
-        std::cout << "Strongly Connected Components:" << std::endl;
-
-        for (const auto& component : result) {
-            for (Vertex* v : component) {
-                std::cout << v->id << " ";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << std::endl;
+    std::cout << "Enter the edges in the format 'source destination weight':" << std::endl;
+    for (int i = 0; i < num_edges; i++) {
+        int u, v, weight;
+        std::cin >> u >> v >> weight;
+        g.add_edge(u, v, weight);
     }
+
+    std::cout << "Graph:" << std::endl;
+    g.print();
+
+    std::cout << "Running Kosaraju's algorithm to find Strongly Connected Components (SCCs)..." << std::endl;
+    g.kosaraju();
 
     return 0;
 }

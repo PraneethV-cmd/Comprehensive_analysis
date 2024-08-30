@@ -1,82 +1,81 @@
 #include <iostream>
-#include <vector>
+#include <list>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
 #include <stack>
+#include <vector>
+#include <climits>
 #include <algorithm>
-#include <cstdlib>
-#include <ctime>
-#include <set>
+#include <fstream>
 
-class Vertex {
-public:
-    int data;
-    std::vector<Vertex*> adj;
-
-    Vertex(int data) : data(data) {}
-
-    void addEdge(Vertex* vertex) {
-        adj.push_back(vertex);
-    }
-};
-
+// Class to represent a graph
 class Graph {
 public:
-    std::unordered_map<int, Vertex*> vertices;
+    std::map<int, std::list<int>> adjacencyList; // Adjacency list representation of the graph
     bool isDirected;
 
     Graph(bool isDirected) : isDirected(isDirected) {}
 
-    void addEdge(int src, int dest) {
-        if (vertices.find(src) == vertices.end()) {
-            vertices[src] = new Vertex(src);
-        }
-        if (vertices.find(dest) == vertices.end()) {
-            vertices[dest] = new Vertex(dest);
-        }
-        vertices[src]->addEdge(vertices[dest]);
+    // Function to add an edge to the graph
+    void add_edge(int u, int v) {
+        adjacencyList[u].push_back(v);
         if (!isDirected) {
-            vertices[dest]->addEdge(vertices[src]);
+            adjacencyList[v].push_back(u);
         }
     }
 
-    std::vector<Vertex*> getAllVertex() {
-        std::vector<Vertex*> allVertices;
-        for (auto& kv : vertices) {
-            allVertices.push_back(kv.second);
+    // Function to print the graph
+    void print() const {
+        for (const auto& i : adjacencyList) {
+            std::cout << i.first << " -> ";
+            for (const auto& j : i.second) {
+                std::cout << j << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+
+    // Function to get all vertices
+    std::vector<int> getAllVertices() const {
+        std::vector<int> allVertices;
+        for (const auto& pair : adjacencyList) {
+            allVertices.push_back(pair.first);
         }
         return allVertices;
     }
 };
 
+// Tarjan's Algorithm to find Strongly Connected Components
 class TarjanSCC {
 private:
-    std::unordered_map<Vertex*, int> visitedTime;
-    std::unordered_map<Vertex*, int> lowTime;
-    std::unordered_set<Vertex*> onStack;
-    std::stack<Vertex*> stack;
-    std::unordered_set<Vertex*> visited;
-    std::vector<std::unordered_set<Vertex*>> result;
+    std::unordered_map<int, int> visitedTime;
+    std::unordered_map<int, int> lowTime;
+    std::unordered_set<int> onStack;
+    std::stack<int> stack;
+    std::unordered_set<int> visited;
+    std::vector<std::unordered_set<int>> result;
     int time;
 
-    void sccUtil(Vertex* vertex) {
+    void sccUtil(int vertex, const Graph& graph) {
         visited.insert(vertex);
         visitedTime[vertex] = lowTime[vertex] = time++;
         stack.push(vertex);
         onStack.insert(vertex);
 
-        for (Vertex* child : vertex->adj) {
-            if (visited.find(child) == visited.end()) {
-                sccUtil(child);
-                lowTime[vertex] = std::min(lowTime[vertex], lowTime[child]);
-            } else if (onStack.find(child) != onStack.end()) {
-                lowTime[vertex] = std::min(lowTime[vertex], visitedTime[child]);
+        for (const auto& child : graph.adjacencyList.at(vertex)) {
+            int v = child;
+            if (visited.find(v) == visited.end()) {
+                sccUtil(v, graph);
+                lowTime[vertex] = std::min(lowTime[vertex], lowTime[v]);
+            } else if (onStack.find(v) != onStack.end()) {
+                lowTime[vertex] = std::min(lowTime[vertex], visitedTime[v]);
             }
         }
 
         if (visitedTime[vertex] == lowTime[vertex]) {
-            std::unordered_set<Vertex*> scc;
-            Vertex* v;
+            std::unordered_set<int> scc;
+            int v;
             do {
                 v = stack.top();
                 stack.pop();
@@ -88,7 +87,7 @@ private:
     }
 
 public:
-    std::vector<std::unordered_set<Vertex*>> scc(Graph& graph) {
+    std::vector<std::unordered_set<int>> scc(const Graph& graph) {
         time = 0;
         visitedTime.clear();
         lowTime.clear();
@@ -97,9 +96,9 @@ public:
         visited.clear();
         result.clear();
 
-        for (Vertex* vertex : graph.getAllVertex()) {
+        for (int vertex : graph.getAllVertices()) {
             if (visited.find(vertex) == visited.end()) {
-                sccUtil(vertex);
+                sccUtil(vertex, graph);
             }
         }
 
@@ -107,56 +106,44 @@ public:
     }
 };
 
-#define RUN 5
-#define MAX_VERTICES 20
-#define MAX_EDGES 200
-
 int main() {
-    srand(time(0));
+    std::ifstream infile("input1.txt"); // Change to the filename as needed
+    if (!infile) {
+        std::cerr << "Error opening file." << std::endl;
+        return 1;
+    }
 
-    for (int i = 1; i <= RUN; i++) {
-        int NUM = 1 + rand() % MAX_VERTICES;
-        int NUMEDGE = 1 + rand() % MAX_EDGES;
+    int num_vertices, num_edges;
+    bool isDirected = true; // Assuming directed graph for Tarjan's algorithm
 
-        while (NUMEDGE > NUM * (NUM - 1)) {
-            NUMEDGE = 1 + rand() % MAX_EDGES;
+    infile >> num_vertices;
+    infile >> num_edges;
+
+    Graph g(isDirected);
+
+    for (int i = 0; i < num_edges; i++) {
+        int u, v;
+        infile >> u >> v;
+        g.add_edge(u, v);
+    }
+
+    infile.close();
+
+    std::cout << "Graph:" << std::endl;
+    g.print();
+
+    TarjanSCC tarjanSCC;
+    std::cout << "Running Tarjan's Algorithm for Strongly Connected Components:" << std::endl;
+    auto result = tarjanSCC.scc(g);
+
+    std::cout << "Strongly Connected Components:" << std::endl;
+    int sccIndex = 1;
+    for (const auto& scc : result) {
+        std::cout << "SCC " << sccIndex++ << ": ";
+        for (const auto& vertex : scc) {
+            std::cout << vertex << " ";
         }
-
-        std::cout << "Test Case " << i << ":\n";
-        std::cout << "Number of vertices: " << NUM << ", Number of edges: " << NUMEDGE << "\n";
-
-        Graph graph(true);
-        std::set<std::pair<int, int>> container;
-
-        for (int j = 1; j <= NUMEDGE; j++) {
-            int a = 1 + rand() % NUM;
-            int b = 1 + rand() % NUM;
-            std::pair<int, int> p = std::make_pair(a, b);
-
-            while (container.find(p) != container.end()) {
-                a = 1 + rand() % NUM;
-                b = 1 + rand() % NUM;
-                p = std::make_pair(a, b);
-            }
-            container.insert(p);
-            graph.addEdge(a, b);
-        }
-
-        for (const auto& edge : container) {
-            std::cout << edge.first << " -> " << edge.second << "\n";
-        }
-
-        TarjanSCC tarjanSCC;
-        auto result = tarjanSCC.scc(graph);
-
-        std::cout << "\nStrongly Connected Components:\n";
-        for (const auto& scc : result) {
-            for (const auto& vertex : scc) {
-                std::cout << vertex->data << " ";
-            }
-            std::cout << "\n";
-        }
-        std::cout << "\n\n";
+        std::cout << std::endl;
     }
 
     return 0;

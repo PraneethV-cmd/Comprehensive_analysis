@@ -7,93 +7,105 @@
 
 class Graph {
 public:
-  std::map<int, std::list<std::pair<int, int> > > adjacencyList;
+  // Data members to store the adjacency list and the number of nodes in the graph
+  std::map<int, std::list<std::pair<int, int>>> adjacencyList;
   int nodeCount;
 
-  Graph(int noOfNodes) : nodeCount(noOfNodes){}
+  // Constructor to initialize the graph with a given number of nodes
+  Graph(int noOfNodes) : nodeCount(noOfNodes) {}
 
-  void add_edge(int u , int v, int weight){
-    this->adjacencyList[u].push_back(std::make_pair(v,weight));
-    this->adjacencyList[v].push_back(std::make_pair(u,weight));
+  // Function to add an undirected edge between nodes 'u' and 'v' with a given weight
+  void add_edge(int u, int v, int weight) {
+    this->adjacencyList[u].push_back(std::make_pair(v, weight)); // Add edge from u to v
+    this->adjacencyList[v].push_back(std::make_pair(u, weight)); // Add edge from v to u (undirected graph)
   }
 
-  void print(){
-    for(auto i : this->adjacencyList){
-      std::cout << i.first << "->" << " " ;
-      for(auto j : i.second){
-        std::cout << j.first << " <-> " << j.second << " ";
+  // Function to print the adjacency list representation of the graph
+  void print() {
+    for (auto i : this->adjacencyList) { // Iterate through each node in the graph
+      std::cout << i.first << " -> "; // Print the node
+      for (auto j : i.second) { // Iterate through the adjacent nodes
+        std::cout << j.first << " <-> " << j.second << " "; // Print the adjacent node and edge weight
       }
-      std::cout << std::endl;
+      std::cout << std::endl; // New line for the next node
     }
   }
 
-  int find_vertex(int u , std::map<int, int> &parent){
-    if(parent[u] != u){
-      parent[u] = find_vertex(parent[u], parent); 
+  // Function to find the root of the set containing 'u' using path compression
+  int find_vertex(int u, std::map<int, int>& parent) {
+    if (parent[u] != u) { // If 'u' is not the root of its set
+      parent[u] = find_vertex(parent[u], parent); // Recursively find the root and apply path compression
     }
-    return parent[u];
+    return parent[u]; // Return the root of the set containing 'u'
   }
 
-  void union_vertices(int u , int v, std::map<int, int> &parent, std::map<int, int> &rank){
-    int root_u = find_vertex(u,parent);
-    int root_v = find_vertex(v,parent);
+  // Function to perform the union of two sets containing nodes 'u' and 'v' using union by rank
+  void union_vertices(int u, int v, std::map<int, int>& parent, std::map<int, int>& rank) {
+    int root_u = find_vertex(u, parent); // Find the root of the set containing 'u'
+    int root_v = find_vertex(v, parent); // Find the root of the set containing 'v'
 
-    if(root_u != root_v){
-      if(rank[root_u] > rank[root_v]){
-        parent[root_v] = root_u;
-      }else if(rank[root_u] < rank[root_v]){
-        parent[root_u] = root_v;
-      }else{
-        parent[root_v] = root_u;
+    if (root_u != root_v) { // If 'u' and 'v' are in different sets, merge them
+      if (rank[root_u] > rank[root_v]) {
+        parent[root_v] = root_u; // Attach the set containing 'v' to the set containing 'u'
+      } else if (rank[root_u] < rank[root_v]) {
+        parent[root_u] = root_v; // Attach the set containing 'u' to the set containing 'v'
+      } else {
+        parent[root_v] = root_u; // If ranks are equal, arbitrarily choose one and increment its rank
         rank[root_u] += 1;
       }
     }
   }
 
-  void barovka(){
-    std::vector<int> min_edge(nodeCount, -1);
-    std::map<int, int> parent, rank;
+  // Function to implement Borůvka's algorithm for finding the Minimum Spanning Tree (MST) of the graph
+  void barovka() {
+    std::vector<int> min_edge(nodeCount, -1); // Vector to store the minimum edge for each component
+    std::map<int, int> parent, rank; // Maps for the parent and rank of each node
 
-    for(int i = 0; i < nodeCount ; i++){
-      parent[i] = i;
-      rank[i] = 0;
+    for (int i = 0; i < nodeCount; i++) {
+      parent[i] = i; // Initially, each node is its own parent (disjoint set)
+      rank[i] = 0;   // Initialize rank of each node to 0
     }
 
-    int componentCount = nodeCount;
-    int mstWeight = 0;
+    int componentCount = nodeCount; // Number of components initially equals the number of nodes
+    int mstWeight = 0; // Variable to store the total weight of the MST
 
-    while(componentCount > 1){
-      std::fill(min_edge.begin(), min_edge.end(), -1);
+    // Continue the algorithm until there is only one component (the MST)
+    while (componentCount > 1) {
+      std::fill(min_edge.begin(), min_edge.end(), -1); // Reset the minimum edge array
 
-      for(auto i : adjacencyList){
-        for(auto j : i.second){
-          int root_u = find_vertex(i.first,parent);
-          int root_v = find_vertex(j.first,parent);
+      // Iterate through each edge in the graph to find the minimum outgoing edge for each component
+      for (auto i : adjacencyList) {
+        for (auto j : i.second) {
+          int root_u = find_vertex(i.first, parent); // Find the root of the set containing 'i.first'
+          int root_v = find_vertex(j.first, parent); // Find the root of the set containing 'j.first'
 
-          if(root_u != root_v){
-            if(min_edge[root_u] == -1 || min_edge[root_u] > j.second){
+          if (root_u != root_v) { // If the nodes are in different components
+            // Update the minimum edge for the component containing 'root_u'
+            if (min_edge[root_u] == -1 || min_edge[root_u] > j.second) {
               min_edge[root_u] = j.second;
             }
-            if(min_edge[root_v] == -1 || min_edge[root_v] > j.second){
+            // Update the minimum edge for the component containing 'root_v'
+            if (min_edge[root_v] == -1 || min_edge[root_v] > j.second) {
               min_edge[root_v] = j.second;
             }
           }
         }
       }
 
-      for(int j = 0 ; j < nodeCount ; j++){
-        if(min_edge[j] != -1){
-          for(auto i : this->adjacencyList[j]){
-            if (i.second == min_edge[j]){
-              int root_u = find_vertex(j, parent);
-              int root_v = find_vertex(i.first, parent);
+      // Iterate over all nodes to add the selected minimum edges to the MST
+      for (int j = 0; j < nodeCount; j++) {
+        if (min_edge[j] != -1) { // If a minimum edge was found for this component
+          for (auto i : this->adjacencyList[j]) {
+            if (i.second == min_edge[j]) { // If this edge is the selected minimum edge
+              int root_u = find_vertex(j, parent); // Find the root of the set containing 'j'
+              int root_v = find_vertex(i.first, parent); // Find the root of the set containing 'i.first'
 
-              if(root_u != root_v){
-                mstWeight += i.second;
-                union_vertices(j, i.first, parent,rank);
-                std::cout << "added edge ( " << j << " <-> " << i.first << " ) \n";
-                std::cout << "added weight: " << i.second << "\n";
-                componentCount -= 1;
+              if (root_u != root_v) { // If they are in different components
+                mstWeight += i.second; // Add the edge weight to the MST total weight
+                union_vertices(j, i.first, parent, rank); // Union the two components
+                std::cout << "Added edge ( " << j << " <-> " << i.first << " ) \n";
+                std::cout << "Added weight: " << i.second << "\n";
+                componentCount -= 1; // Decrease the number of components
               }
             }
           }
@@ -101,30 +113,32 @@ public:
       }
     }
 
-    std::cout << "total weight of the minimum spanning tree is : " << mstWeight << std::endl;
+    std::cout << "Total weight of the minimum spanning tree is: " << mstWeight << std::endl; // Print the MST weight
   }
 };
 
 int main() {
-    Graph g(9);
+    int V, E;
+    std::cout << "Enter the number of vertices: ";
+    std::cin >> V;
 
-    g.add_edge(0, 1, 4);
-    g.add_edge(0, 6, 7);
-    g.add_edge(1, 6, 11);
-    g.add_edge(1, 7, 20);
-    g.add_edge(1, 2, 9);
-    g.add_edge(2, 3, 6);
-    g.add_edge(2, 4, 2);
-    g.add_edge(3, 4, 10);
-    g.add_edge(3, 5, 5);
-    g.add_edge(4, 5, 15);
-    g.add_edge(4, 7, 1);
-    g.add_edge(4, 8, 5);
-    g.add_edge(5, 8, 12);
-    g.add_edge(6, 7, 1);
-    g.add_edge(7, 8, 3);
+    Graph g(V); // Create a graph with the specified number of vertices
 
-    g.barovka();
+    std::cout << "Enter the number of edges: ";
+    std::cin >> E;
+
+    std::cout << "Enter each edge with its weight (format: u v weight):\n";
+    for (int i = 0; i < E; i++) {
+        int u, v, weight;
+        std::cin >> u >> v >> weight;
+        g.add_edge(u, v, weight); // Add each edge to the graph
+    }
+
+    std::cout << "Graph edges and weights:\n";
+    g.print(); // Print the graph
+
+    std::cout << "Starting Borůvka's algorithm:\n";
+    g.barovka(); // Execute Borůvka's algorithm
 
     return 0;
 }

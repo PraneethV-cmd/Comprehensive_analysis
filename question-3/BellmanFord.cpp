@@ -1,100 +1,136 @@
 #include <iostream>
-#include <vector>
 #include <climits>
-#include <set>
-#include <cstdlib>
-#include <ctime>
+#include <vector>
+#include <tuple>
+#include <map>
 
-struct edge {
-    int src, des, weight;
-};
+// This class represents a graph for the Bellman-Ford algorithm
+class Graph {
+public:
+    int vertexCount;  // Number of vertices in the graph
+    std::vector<std::tuple<int, int, int>> edges; // Stores edges as (src, dest, weight)
 
-std::pair<bool, std::vector<int>> bellmanFord(std::vector<edge>& graph, int vertex, int source) {
-    std::vector<int> distances(vertex, INT_MAX);
-    distances[source] = 0;
+    // Constructor to initialize the graph with a given number of vertices
+    Graph(int vertices) {
+        vertexCount = vertices;
+    }
 
-    for (int i = 0; i < vertex - 1; i++) {
-        for (int j = 0; j < graph.size(); j++) {
-            if (distances[graph[j].src] != INT_MAX && distances[graph[j].des] > distances[graph[j].src] + graph[j].weight) {
-                distances[graph[j].des] = distances[graph[j].src] + graph[j].weight;
-            }
+    // Adds an edge to the graph
+    // @param u: Source vertex of the edge
+    // @param v: Destination vertex of the edge
+    // @param weight: Weight of the edge
+    void add_edge(int u, int v, int weight) {
+        edges.push_back(std::make_tuple(u, v, weight));
+    }
+
+    // Prints the edges of the graph
+    // This is useful for debugging or visualizing the graph
+    void print() const {
+        for (const auto& edge : edges) {
+            std::cout << std::get<0>(edge) << " -> " << std::get<1>(edge)
+                      << " with weight " << std::get<2>(edge) << std::endl;
         }
     }
 
-    for (int j = 0; j < graph.size(); j++) {
-        if (distances[graph[j].src] != INT_MAX && distances[graph[j].des] > distances[graph[j].src] + graph[j].weight) {
-            return std::make_pair(false, std::vector<int>());
-        }
-    }
+    // Finds the shortest paths from the source vertex using the Bellman-Ford algorithm
+    // @param source: The starting vertex for the shortest path calculation
+    // @return: A pair containing a boolean indicating if there's no negative weight cycle
+    //          and a vector of shortest path distances from the source vertex
+    std::pair<bool, std::vector<int>> bellmanFord(int source) const {
+        std::vector<int> distances(vertexCount, INT_MAX); // Initialize distances to all vertices as infinite
+        distances[source] = 0; // Distance to the source vertex is 0
 
-    return std::make_pair(true, distances);
-}
+        // Relax edges |V|-1 times
+        for (int i = 0; i < vertexCount - 1; i++) {
+            for (const auto& edge : edges) {
+                int u = std::get<0>(edge);
+                int v = std::get<1>(edge);
+                int weight = std::get<2>(edge);
 
-int main() {
-    std::set<std::pair<int, int>> container;
-    std::set<std::pair<int, int>>::iterator it;
-
-    // Uncomment the below line to store the test data in a file
-    // freopen("Test_Cases_Directed_Weighted_Graph.in", "w", stdout);
-
-    std::srand(std::time(NULL));
-
-    int RUN = 5;
-    int MAX_VERTICES = 20;
-    int MAX_EDGES = 200;
-    int MAXWEIGHT = 200;
-
-    for (int i = 1; i <= RUN; i++) {
-        int vertex = 1 + std::rand() % MAX_VERTICES;
-        int edges = 1 + std::rand() % MAX_EDGES;
-
-        while (edges > vertex * (vertex - 1) / 2)
-            edges = 1 + std::rand() % MAX_EDGES;
-
-        std::vector<edge> graph;
-
-        std::printf("%d %d\n", vertex, edges);
-
-        for (int j = 1; j <= edges; j++) {
-            int src = 1 + std::rand() % vertex;
-            int des = 1 + std::rand() % vertex;
-            std::pair<int, int> p = std::make_pair(src, des);
-
-            while (container.find(p) != container.end()) {
-                src = 1 + std::rand() % vertex;
-                des = 1 + std::rand() % vertex;
-                p = std::make_pair(src, des);
-            }
-            container.insert(p);
-
-            int wt = 1 + std::rand() % MAXWEIGHT;
-            graph.push_back({src - 1, des - 1, wt}); // Adjusting to 0-indexed for the Bellman-Ford function
-            std::printf("%d %d %d\n", src, des, wt);
-        }
-
-        int source = std::rand() % vertex;
-        std::printf("Source: %d\n", source + 1); // Adjusting to 1-indexed for user understanding
-        std::pair<bool, std::vector<int>> result = bellmanFord(graph, vertex, source);
-
-        if (result.first) {
-            std::cout << "No Negative Weight Cycle Exists!" << std::endl;
-            for (int dist : result.second) {
-                if (dist == INT_MAX) {
-                    std::cout << "INF ";
-                } else {
-                    std::cout << dist << " ";
+                // Update the distance to the destination vertex if a shorter path is found
+                if (distances[u] != INT_MAX && distances[v] > distances[u] + weight) {
+                    distances[v] = distances[u] + weight;
                 }
             }
-            std::cout << std::endl;
-        } else {
-            std::cout << "Graph Has Negative Weight Cycle" << std::endl;
         }
-        std::cout << std::endl;
 
-        container.clear();
+        // Check for negative weight cycles
+        for (const auto& edge : edges) {
+            int u = std::get<0>(edge);
+            int v = std::get<1>(edge);
+            int weight = std::get<2>(edge);
+
+            // If we can still relax an edge, then a negative weight cycle exists
+            if (distances[u] != INT_MAX && distances[v] > distances[u] + weight) {
+                return std::make_pair(false, std::vector<int>());
+            }
+        }
+
+        return std::make_pair(true, distances); // No negative weight cycle found
+    }
+};
+
+int main() {
+    int numVertices; // Number of vertices in the graph
+    int numEdges; // Number of edges in the graph
+
+    // Input the number of vertices
+    std::cout << "Enter the number of vertices: ";
+    std::cin >> numVertices;
+
+    // Input the number of edges
+    std::cout << "Enter the number of edges: ";
+    std::cin >> numEdges;
+
+    // Create a graph object with the specified number of vertices
+    Graph g(numVertices);
+
+    // Input edges from the user
+    std::cout << "Enter the edges (start vertex, end vertex, weight):" << std::endl;
+
+    for (int i = 0; i < numEdges; ++i) {
+        int u, v, weight;
+        std::cin >> u >> v >> weight;
+
+        // Check if the vertices are valid
+        if (u < 0 || u >= numVertices || v < 0 || v >= numVertices) {
+            std::cout << "Invalid vertices. Vertices should be between 0 and " << numVertices - 1 << "." << std::endl;
+            --i;
+            continue;
+        }
+
+        // Add the edge to the graph
+        g.add_edge(u, v, weight);
     }
 
-    // Uncomment the below line to store the test data in a file
-    // fclose(stdout);
+    // Input the source vertex for the Bellman-Ford algorithm
+    int src;
+    std::cout << "Enter the source vertex: ";
+    std::cin >> src;
+
+    // Check if the source vertex is valid
+    if (src < 0 || src >= numVertices) {
+        std::cout << "Invalid source vertex. Must be between 0 and " << numVertices - 1 << "." << std::endl;
+        return 1;
+    }
+
+    // Compute shortest paths using Bellman-Ford algorithm
+    auto result = g.bellmanFord(src);
+
+    // Output the result
+    if (result.first) {
+        std::cout << "No Negative Weight Cycle Exists!" << std::endl;
+        std::cout << "Vertex distances from the source:" << std::endl;
+        for (int i = 0; i < numVertices; ++i) {
+            if (result.second[i] == INT_MAX) {
+                std::cout << i << ": INF" << std::endl;
+            } else {
+                std::cout << i << ": " << result.second[i] << std::endl;
+            }
+        }
+    } else {
+        std::cout << "Graph Has a Negative Weight Cycle" << std::endl;
+    }
+
     return 0;
 }
