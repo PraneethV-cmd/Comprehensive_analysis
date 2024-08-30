@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.11)  23 AUG 2024 14:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.11)  30 AUG 2024 00:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -62,7 +62,44 @@ File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count198
 \l__pdf_internal_box=\box52
 )
-(./review.aux)
+(./review.aux
+
+LaTeX Warning: Label `fig:image5' multiply defined.
+
+
+LaTeX Warning: Label `fig:image6' multiply defined.
+
+
+LaTeX Warning: Label `fig:image7' multiply defined.
+
+
+LaTeX Warning: Label `fig:image8' multiply defined.
+
+
+LaTeX Warning: Label `fig:image5' multiply defined.
+
+
+LaTeX Warning: Label `fig:image6' multiply defined.
+
+
+LaTeX Warning: Label `fig:image7' multiply defined.
+
+
+LaTeX Warning: Label `fig:image8' multiply defined.
+
+
+LaTeX Warning: Label `fig:image5' multiply defined.
+
+
+LaTeX Warning: Label `fig:image6' multiply defined.
+
+
+LaTeX Warning: Label `fig:image7' multiply defined.
+
+
+LaTeX Warning: Label `fig:image8' multiply defined.
+
+)
 \openout1 = `review.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
@@ -79,8 +116,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
-
-(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count199
 \scratchdimen=\dimen144
@@ -109,9 +145,9 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 11.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 33.
+(Font)              <7> on input line 32.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 33.
+(Font)              <5> on input line 32.
 
 [1
 
@@ -119,28 +155,28 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 <./quicksort-tc-1.png, id=14, 891.33pt x 199.74625pt>
 File: ./quicksort-tc-1.png Graphic file (type png)
 <use ./quicksort-tc-1.png>
-Package pdftex.def Info: ./quicksort-tc-1.png  used on input line 50.
+Package pdftex.def Info: ./quicksort-tc-1.png  used on input line 49.
 (pdftex.def)             Requested size: 276.00105pt x 61.85059pt.
 <./quicksort-tc-2.png, id=16, 855.195pt x 364.36125pt>
 File: ./quicksort-tc-2.png Graphic file (type png)
 <use ./quicksort-tc-2.png>
-Package pdftex.def Info: ./quicksort-tc-2.png  used on input line 62.
+Package pdftex.def Info: ./quicksort-tc-2.png  used on input line 61.
 (pdftex.def)             Requested size: 276.00105pt x 117.5876pt.
 <./quicksort-tc-3.png, id=17, 1187.43625pt x 422.57875pt>
 File: ./quicksort-tc-3.png Graphic file (type png)
 <use ./quicksort-tc-3.png>
-Package pdftex.def Info: ./quicksort-tc-3.png  used on input line 74.
+Package pdftex.def Info: ./quicksort-tc-3.png  used on input line 73.
 (pdftex.def)             Requested size: 276.00105pt x 98.22275pt.
 
 [2 <./quicksort-tc-1.png> <./quicksort-tc-2.png> <./quicksort-tc-3.png>]
 <./quicksort-tc-4.png, id=26, 1127.21124pt x 766.865pt>
 File: ./quicksort-tc-4.png Graphic file (type png)
 <use ./quicksort-tc-4.png>
-Package pdftex.def Info: ./quicksort-tc-4.png  used on input line 86.
+Package pdftex.def Info: ./quicksort-tc-4.png  used on input line 85.
 (pdftex.def)             Requested size: 276.00105pt x 187.7724pt.
 
 
-LaTeX Warning: File `path/to/image5.png' not found on input line 99.
+LaTeX Warning: File `path/to/image5.png' not found on input line 115.
 
 
 ! Package pdftex.def Error: File `path/to/image5.png' not found: using draft se
@@ -150,14 +186,14 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.99 ...s[width=0.8\textwidth]{path/to/image5.png}
+l.115 ...[width=0.8\textwidth]{path/to/image5.png}
                                                   
 ? 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: File `path/to/image6.png' not found on input line 112.
+LaTeX Warning: File `path/to/image6.png' not found on input line 128.
 
 
 ! Package pdftex.def Error: File `path/to/image6.png' not found: using draft se
@@ -167,14 +203,15 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.112 ...[width=0.8\textwidth]{path/to/image6.png}
+l.128 ...[width=0.8\textwidth]{path/to/image6.png}
                                                   
 ? 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+[3 <./quicksort-tc-4.png>]
 
-LaTeX Warning: File `path/to/image7.png' not found on input line 125.
+LaTeX Warning: File `path/to/image7.png' not found on input line 141.
 
 
 ! Package pdftex.def Error: File `path/to/image7.png' not found: using draft se
@@ -184,14 +221,14 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.125 ...[width=0.8\textwidth]{path/to/image7.png}
+l.141 ...[width=0.8\textwidth]{path/to/image7.png}
                                                   
 ? 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: File `path/to/image8.png' not found on input line 138.
+LaTeX Warning: File `path/to/image8.png' not found on input line 154.
 
 
 ! Package pdftex.def Error: File `path/to/image8.png' not found: using draft se
@@ -201,20 +238,228 @@ See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.138 ...[width=0.8\textwidth]{path/to/image8.png}
+l.154 ...[width=0.8\textwidth]{path/to/image8.png}
                                                   
 ? 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3 <./quicksort-tc-4.png>] [4] [5] [6] [7] (./review.aux)
+[4]
+
+LaTeX Warning: File `path/to/image5.png' not found on input line 181.
+
+
+! Package pdftex.def Error: File `path/to/image5.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.181 ...[width=0.8\textwidth]{path/to/image5.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: File `path/to/image6.png' not found on input line 194.
+
+
+! Package pdftex.def Error: File `path/to/image6.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.194 ...[width=0.8\textwidth]{path/to/image6.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: File `path/to/image7.png' not found on input line 207.
+
+
+! Package pdftex.def Error: File `path/to/image7.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.207 ...[width=0.8\textwidth]{path/to/image7.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: File `path/to/image8.png' not found on input line 220.
+
+
+! Package pdftex.def Error: File `path/to/image8.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.220 ...[width=0.8\textwidth]{path/to/image8.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[5] [6]
+
+LaTeX Warning: File `path/to/image5.png' not found on input line 250.
+
+
+! Package pdftex.def Error: File `path/to/image5.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.250 ...[width=0.8\textwidth]{path/to/image5.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: File `path/to/image6.png' not found on input line 263.
+
+
+! Package pdftex.def Error: File `path/to/image6.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.263 ...[width=0.8\textwidth]{path/to/image6.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: File `path/to/image7.png' not found on input line 276.
+
+
+! Package pdftex.def Error: File `path/to/image7.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.276 ...[width=0.8\textwidth]{path/to/image7.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[7]
+
+LaTeX Warning: File `path/to/image8.png' not found on input line 289.
+
+
+! Package pdftex.def Error: File `path/to/image8.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.289 ...[width=0.8\textwidth]{path/to/image8.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[8]
+
+LaTeX Warning: File `path/to/image5.png' not found on input line 314.
+
+
+! Package pdftex.def Error: File `path/to/image5.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.314 ...[width=0.8\textwidth]{path/to/image5.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: File `path/to/image6.png' not found on input line 327.
+
+
+! Package pdftex.def Error: File `path/to/image6.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.327 ...[width=0.8\textwidth]{path/to/image6.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: File `path/to/image7.png' not found on input line 340.
+
+
+! Package pdftex.def Error: File `path/to/image7.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.340 ...[width=0.8\textwidth]{path/to/image7.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: File `path/to/image8.png' not found on input line 353.
+
+
+! Package pdftex.def Error: File `path/to/image8.png' not found: using draft se
+tting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.353 ...[width=0.8\textwidth]{path/to/image8.png}
+                                                  
+? 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[9] [10] [11] [12] [13] [14] [15] [16] [17] [18] [19] (./review.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
@@ -224,7 +469,7 @@ Here is how much of TeX's memory you used:
  24182 multiletter control sequences out of 15000+600000
  562185 words of font info for 50 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,6n,65p,535b,528s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,6n,65p,535b,534s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -235,10 +480,10 @@ ocal/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loc
 al/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/
 texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on review.pdf (7 pages, 978616 bytes).
+Output written on review.pdf (19 pages, 1001026 bytes).
 PDF statistics:
- 87 PDF objects out of 1000 (max. 8388607)
- 49 compressed objects within 1 object stream
+ 125 PDF objects out of 1000 (max. 8388607)
+ 75 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
