@@ -7,32 +7,35 @@
 #include <set>
 #include <queue>
 
+//This Class is to represent a graph
 class Graph {
 public:
-    std::map<int, std::vector<std::pair<int, int>>> adjacencyList;
+    std::map<int, std::vector<std::pair<int, int>>> adjacencyList; // Adjacency list representation of the graph 
 
-public:
+    //This function adds an edge to the graph 
     void add_edge(int u, int v, int weight) {
-        adjacencyList[u].push_back(std::make_pair(v, weight));
-        adjacencyList[v].push_back(std::make_pair(u, weight));
+        adjacencyList[u].emplace_back(v, weight);
+        adjacencyList[v].emplace_back(u, weight);
     }
 
-    void print() {
-        for (const auto& i : adjacencyList) {
-            std::cout << i.first << "->";
-            for (const auto& j : i.second) {
-                std::cout << j.first << " " << j.second << " ";
+    //This function prints the graph
+    void print() const {
+        for (const auto& node : adjacencyList) {
+            std::cout << node.first << " -> ";
+            for (const auto& edge : node.second) {
+                std::cout << "(" << edge.first << ", " << edge.second << ") ";
             }
             std::cout << std::endl;
         }
     }
 
+    //This function is used to find the shortes path using the Dijkstra algorithm. THis uses the priority queue to store vertices and maps the shortest distance.
     void shortest_path(int src) {
-        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> minPrioriQueue;
+        std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>> minPrioriQueue;
         std::map<int, int> dist;
 
-        for (const auto& i : adjacencyList) {
-            dist[i.first] = INT_MAX;
+        for (const auto& node : adjacencyList) {
+            dist[node.first] = INT_MAX;
         }
 
         minPrioriQueue.push(std::make_pair(0, src));
@@ -42,9 +45,9 @@ public:
             int u = minPrioriQueue.top().second;
             minPrioriQueue.pop();
 
-            for (const auto& i : adjacencyList[u]) {
-                int v = i.first;
-                int weight = i.second;
+            for (const auto& edge : adjacencyList[u]) {
+                int v = edge.first;
+                int weight = edge.second;
 
                 if (dist[v] > dist[u] + weight) {
                     dist[v] = dist[u] + weight;
@@ -52,69 +55,47 @@ public:
                 }
             }
         }
-
-        std::cout << "Vertex distance from the source" << std::endl;
-        for (const auto& i : dist) {
-            std::cout << i.first << "\t" << i.second << std::endl;
+        std::cout << "Vertex distance from the source:" << std::endl;
+        for (const auto& node : dist) {
+            std::cout << node.first << "\t" << node.second << std::endl;
         }
     }
 };
 
-#define RUN 5
-#define MAX_VERTICES 20
-#define MAX_EDGES 200
-#define MAXWEIGHT 200
-
 int main() {
-    std::set<std::pair<int, int>> container;
+    int numVertices = 20; 
+    int numEdges;
 
-    // For random values every time
-    std::srand(std::time(NULL));
+    std::cout << "Enter the number of edges: ";
+    std::cin >> numEdges;
 
-    int NUM;    // Number of Vertices
-    int NUMEDGE; // Number of Edges
+    Graph g;
 
-    for (int i = 1; i <= RUN; i++) {
-        Graph g;
+    std::cout << "Enter the edges (start vertex, end vertex, weight):" << std::endl;
+    for (int i = 0; i < numEdges; ++i) {
+        int u, v, weight;
+        std::cin >> u >> v >> weight;
 
-        NUM = 1 + std::rand() % MAX_VERTICES;
-        NUMEDGE = 1 + std::rand() % MAX_EDGES;
-
-        while (NUMEDGE > NUM * (NUM - 1) / 2)
-            NUMEDGE = 1 + std::rand() % MAX_EDGES;
-
-        std::printf("%d %d\n", NUM, NUMEDGE);
-
-        for (int j = 1; j <= NUMEDGE; j++) {
-            int a = std::rand() % NUM;
-            int b = std::rand() % NUM;
-            std::pair<int, int> p = std::make_pair(a, b);
-            std::pair<int, int> reverse_p = std::make_pair(b, a);
-
-            while (container.find(p) != container.end() ||
-                   container.find(reverse_p) != container.end()) {
-                a = std::rand() % NUM;
-                b = std::rand() % NUM;
-                p = std::make_pair(a, b);
-                reverse_p = std::make_pair(b, a);
-            }
-            container.insert(p);
+        // This checks whether the entered vertices are valid
+        if (u < 0 || u >= numVertices || v < 0 || v >= numVertices) {
+            std::cout << "Invalid vertices. Vertices should be between 0 and " << numVertices - 1 << "." << std::endl;
+            --i;  
+            continue;
         }
 
-        for (auto it = container.begin(); it != container.end(); ++it) {
-            int wt = 1 + std::rand() % MAXWEIGHT;
-            g.add_edge(it->first, it->second, wt);
-            std::printf("%d %d %d\n", it->first, it->second, wt);
-        }
-
-        container.clear();
-
-        // Choose a random source vertex and find the shortest paths
-        int src = std::rand() % NUM;
-        std::cout << "Source Vertex: " << src << std::endl;
-        g.shortest_path(src);
-        std::cout << std::endl;
+        g.add_edge(u, v, weight);
     }
+
+    int src;
+    std::cout << "Enter the source vertex: ";
+    std::cin >> src;
+
+    if (src < 0 || src >= numVertices) {
+        std::cout << "Invalid source vertex. Must be between 0 and " << numVertices - 1 << "." << std::endl;
+        return 1;
+    }
+
+    g.shortest_path(src);
 
     return 0;
 }

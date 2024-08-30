@@ -6,23 +6,19 @@
 #include <set>
 #include <climits>
 #include <algorithm>
-#include <cstdlib>
-#include <ctime>
 
-#define RUN 5
-#define MAX_VERTICES 20
-#define MAX_EDGES 200
-#define MAXWEIGHT 200
-
+//This Class is to represent a graph
 class Graph {
 public:
-    std::map<int, std::list<std::pair<int, int>>> adjacencyList;
+    std::map<int, std::list<std::pair<int, int>>> adjacencyList;// Adjacency list representation of the graph 
 
+    //This function adds an edge to the graph 
     void add_edge(int u, int v, int weight) {
         adjacencyList[u].push_back(std::make_pair(v, weight));
         adjacencyList[v].push_back(std::make_pair(u, weight));
     }
 
+    //This function prints the graph
     void print() {
         for (auto i : adjacencyList) {
             std::cout << i.first << " -> ";
@@ -33,6 +29,7 @@ public:
         }
     }
 
+    //This function is used to find the shortest path using the Dijkstra algorithm. THis uses the minimum distance list to store vertices and maps the shortest distance.
     void naive_dijkstra(int src) {
         std::list<std::pair<int, int>> minList;
         std::map<int, int> dist;
@@ -65,48 +62,31 @@ public:
 };
 
 int main() {
-    srand(time(NULL));
-
-    for (int i = 1; i <= RUN; i++) {
-        int NUM = 1 + rand() % MAX_VERTICES;
-        int NUMEDGE = 1 + rand() % MAX_EDGES;
-        while (NUMEDGE > NUM * (NUM - 1) / 2)
-            NUMEDGE = 1 + rand() % MAX_EDGES;
-
-        std::cout << "Test case " << i << ":" << std::endl;
-        std::cout << "Vertices: " << NUM << ", Edges: " << NUMEDGE << std::endl;
-
-        Graph g;
-        std::set<std::pair<int, int>> container;
-
-        for (int j = 1; j <= NUMEDGE; j++) {
-            int a = rand() % NUM;
-            int b = rand() % NUM;
-            std::pair<int, int> p = std::make_pair(a, b);
-            std::pair<int, int> reverse_p = std::make_pair(b, a);
-            
-            while (container.find(p) != container.end() ||
-                   container.find(reverse_p) != container.end()) {
-                a = rand() % NUM;
-                b = rand() % NUM;
-                p = std::make_pair(a, b);
-                reverse_p = std::make_pair(b, a);
-            }
-            container.insert(p);
-            
-            int wt = 1 + rand() % MAXWEIGHT;
-            g.add_edge(a, b, wt);
-        }
-
-        std::cout << "Graph:" << std::endl;
-        g.print();
-
-        int src = rand() % NUM;
-        std::cout << "Running Dijkstra's algorithm from source: " << src << std::endl;
-        g.naive_dijkstra(src);
-
-        std::cout << "\n";
+    Graph g;
+    int num_vertices, num_edges;
+    
+    std::cout << "Enter the number of vertices: ";
+    std::cin >> num_vertices;
+    
+    std::cout << "Enter the number of edges: ";
+    std::cin >> num_edges;
+    
+    std::cout << "Enter the edges in the format 'source destination weight':" << std::endl;
+    for (int i = 0; i < num_edges; i++) {
+        int u, v, weight;
+        std::cin >> u >> v >> weight;
+        g.add_edge(u, v, weight);
     }
+    
+    std::cout << "Graph:" << std::endl;
+    g.print();
+    
+    int src;
+    std::cout << "Enter the source vertex for Dijkstra's algorithm: ";
+    std::cin >> src;
+    
+    std::cout << "Running Dijkstra's algorithm from source: " << src << std::endl;
+    g.naive_dijkstra(src);
 
     return 0;
 }
